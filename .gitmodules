@@ -1,0 +1,6 @@
+[submodule "lvgl"]
+	path = lvgl
+	url = https://github.com/alex-jegers/lvgl
+[submodule "FreeRTOS-Kernel_ARM"]
+	path = FreeRTOS-Kernel_ARM
+	url = https://github.com/alex-jegers/FreeRTOS-Kernel_ARM
