@@ -20,13 +20,19 @@ static void prv_task_lvgl_timer_update()
 {
     /* Initialize the LTDC and the LCD itself. */
     lcd_init();
+
+    /* For the delay between refreshes. */
+    TickType_t last_wake_time = 0;
     while (prv_run)
 	{
 		if (xSemaphoreTake(prv_lv_mutex, portMAX_DELAY) == pdPASS)
 		{
 			uint32_t time_till_next = lv_task_handler();
 			xSemaphoreGive(prv_lv_mutex);
-			vTaskDelay(pdMS_TO_TICKS(time_till_next));
+			if (time_till_next != 0)
+			{
+				vTaskDelayUntil(&last_wake_time, pdMS_TO_TICKS(time_till_next));
+			}
 		}
 	}
     xEventGroupSetBits(prv_event_group, EVENT_BITS_TASK_STOPPED);
@@ -47,7 +53,7 @@ void lv_port_run()
     lv_init();  
 
     prv_run = true;
-    xTaskCreate(prv_task_lvgl_timer_update, "LVGL_TASK_HANDLER", 5000 / 4, NULL, 2, &prv_task_handle);
+    xTaskCreate(prv_task_lvgl_timer_update, "LVGL_TASK_HANDLER", 8000 / 4, NULL, 2, &prv_task_handle);
 }
 
 bool lv_port_take_lvgl_mutex(uint32_t block_time_ms)
