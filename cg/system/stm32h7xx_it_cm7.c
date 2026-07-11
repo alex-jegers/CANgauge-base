@@ -22,7 +22,7 @@
 
 #include "stm32h7xx_it_cm7.h"
 #include "system/system_cm7.h"
-#include "application/error_handler.h"
+#include "system/error_handler.h"
 
 
 /******************************************************************************/
