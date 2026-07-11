@@ -15,9 +15,7 @@
 #if !defined(TARGET_HARDWARE_CANGAUGE) && !defined(TARGET_HARDWARE_STM32H745DISCO)
 	#error "Error: No hardware target defined. Please define either TARGET_HARDWARE_CANGAUGE or TARGET_HARDWARE_STM32H745DISCO."
 #endif
-
-#include "system/system_cm7.h"
-#include "drivers/drivers.h"
+#include "cangauge.h"
 #include "application/applications_cm7.h"
 
 
@@ -36,6 +34,10 @@ int main(void)
 
 	/* Creates a task to finish the rest of the system initialization. */
    	xTaskCreate(system_task_init, "SYS_INIT", 650, NULL, 5, NULL);
+
+	/* Load the menu screen. */
+	system_set_ui_init_cb(app_gauges_run);
+	//lv_demo_benchmark();
 
 	/* Starts the FreeRTOS scheduler. */
 	vTaskStartScheduler();

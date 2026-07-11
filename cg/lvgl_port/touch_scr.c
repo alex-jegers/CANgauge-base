@@ -1,15 +1,7 @@
 
 
 /**********     INCLUDES        **********/
-#include "drivers/drivers.h"
-
-#include <stdbool.h>
 #include "touch_scr.h"
-
-#include "FreeRTOS.h"
-#include "queue.h"
-#include "task.h"
-#include "event_groups.h"
 
 /**********		DEFINES		**********/
 

@@ -21,7 +21,6 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
-#include "list.h"
 #include "semphr.h"
 #include "event_groups.h"
 
@@ -65,6 +64,7 @@ void system_set_lcd_backlight(bool on);
  *      on: true for on, false for off.
  */
 void system_set_can_transc(bool on);
+void system_set_ui_init_cb(void (*func)());
 
 #endif /* CORE_SYSTEM_CM7_SYSTEM_H_ */
 

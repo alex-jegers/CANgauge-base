@@ -1,10 +1,6 @@
 /**********     INCLUDES        **********/
 #include "lv_port.h"
-#include "lvgl/lvgl.h"
-#include "drivers/drivers.h"
-#include "FreeRTOS.h"
-#include "semphr.h"
-#include "event_groups.h"
+#include "cangauge.h"
 
 /**********		DEFINES		**********/
 #define EVENT_BITS_TASK_STOPPED        (EventBits_t)0x01       //Bit is set when the task is deleted.

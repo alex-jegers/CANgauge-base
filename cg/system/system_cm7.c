@@ -7,13 +7,11 @@
 
 
 /**********		INCLUDES		**********/
-#include "application/applications_cm7.h"
 #include "system_cm7.h"
 
 #include "drivers/drivers.h"
 #include "lvgl_port/lvgl_port_def.h"
-#include "ui/ui_helpers.h"
-#include "ui/ui_gauges.h"
+#include "ui_helpers/ui_helpers.h"
 
 
 /**********		DEFINES		**********/
@@ -36,6 +34,7 @@ static uint32_t prv_blink_delay_on = 0;
 static uint32_t prv_blink_delay_off = 0;
 static bool prv_run_blink = false;
 static EventGroupHandle_t prv_event_group = NULL;
+static void (*prv_ui_init_cb)();		//Function pointer for the application to call to initialize the UI when system init task is done.
 
 /**********     STATIC FUNCTION DECLARATIONS     **********/
 
@@ -124,9 +123,10 @@ void system_task_init()
 	//system_run_runtime_stats_task();
 	//system_run_heap_stats_task();
 
-	/* Load the menu screen. */
-	app_gauges_run();
-	//lv_demo_benchmark();
+	if (prv_ui_init_cb != NULL)
+	{
+		prv_ui_init_cb();
+	}
 
 	char last_error_str[50];
 	memset(last_error_str, 0, 50 * sizeof(char));
@@ -248,4 +248,8 @@ void system_set_can_transc(bool on)
 	}
 }
 
+void system_set_ui_init_cb(void (*func)())
+{
+	prv_ui_init_cb = func;
+}
 

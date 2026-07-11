@@ -14,8 +14,7 @@ extern "C" {
 #endif
 
 /**********     INCLUDES        **********/
-#include "stm32h745xx.h"
-#include "lvgl_port/lvgl_port_def.h"
+#include "lvgl_port_def.h"
 
 /**********     DEFINES      **********/
 

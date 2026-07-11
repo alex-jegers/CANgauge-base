@@ -1,14 +1,7 @@
 /**********     INCLUDES        **********/
 #include "disp.h"
 
-#include "lvgl/lvgl.h"
-
-#include "ui/ui_helpers.h"
-#include "ui/ui_helpers.h"
-
-#include "common/drivers/drivers.h"
-
-#include "system/system_cm7.h"
+#include "cangauge.h"
 
 /**********		DEFINES		**********/
 

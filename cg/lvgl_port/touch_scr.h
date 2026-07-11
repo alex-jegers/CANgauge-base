@@ -9,7 +9,7 @@ extern "C" {
 #endif
 
 /**********     INCLUDES        **********/
-#include "stm32h745xx.h"
+#include "cangauge.h"
 #include "lvgl_port_def.h"
 
 /**********     DEFINES      **********/
