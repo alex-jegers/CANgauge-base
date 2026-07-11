@@ -22,14 +22,17 @@ static void prv_task_lvgl_timer_update()
     lcd_init();
 
     /* For the delay between refreshes. */
-    TickType_t last_wake_time;
+    TickType_t last_wake_time = 0;
     while (prv_run)
 	{
 		if (xSemaphoreTake(prv_lv_mutex, portMAX_DELAY) == pdPASS)
 		{
 			uint32_t time_till_next = lv_task_handler();
 			xSemaphoreGive(prv_lv_mutex);
-			vTaskDelayUntil(&last_wake_time, pdMS_TO_TICKS(time_till_next));
+			if (time_till_next != 0)
+			{
+				vTaskDelayUntil(&last_wake_time, pdMS_TO_TICKS(time_till_next));
+			}
 		}
 	}
     xEventGroupSetBits(prv_event_group, EVENT_BITS_TASK_STOPPED);
