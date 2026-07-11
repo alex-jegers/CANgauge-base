@@ -7,6 +7,7 @@
  *
  ******************************************************************************
  */
+#define TARGET_HARDWARE_CANGAUGE
 
 #include "cangauge.h"
 #include "demos/benchmark/lv_demo_benchmark.h"
