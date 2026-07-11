@@ -110,8 +110,6 @@ void system_task_init()
 	/* Start all the tasks. */
 	system_blink_run(1000);
 
-	pwr_monitor_run(3);
-
 	/* Set up the display and input device callbacks for LVGL. */
    	static touch_info_t touch_data;						//Where the touch data will be stored.
    	static touch_info_t* p_touch_data = &touch_data;	//Pointer to the touch data for indev_init.
