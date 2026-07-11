@@ -7,17 +7,10 @@
  *
  ******************************************************************************
  */
+#define TARGET_HARDWARE_CANGAUGE
 
-#if defined(TARGET_HARDWARE_CANGAUGE) && defined(TARGET_HARDWARE_STM32H745DISCO)
-	#error "Error: Both hardware targets defined, please only define one."
-#endif
-
-#if !defined(TARGET_HARDWARE_CANGAUGE) && !defined(TARGET_HARDWARE_STM32H745DISCO)
-	#error "Error: No hardware target defined. Please define either TARGET_HARDWARE_CANGAUGE or TARGET_HARDWARE_STM32H745DISCO."
-#endif
 #include "cangauge.h"
 #include "application/applications_cm7.h"
-
 
 int main(void)
 {
