@@ -1,9 +1,6 @@
 /**********     INCLUDES        **********/
 #include "runtime_stats.h"
-#include "drivers/drivers.h"
-#include "system/system_cm7.h"
-#include "task.h"
-
+#include "cangauge.h"
 /**********     TYPEDEFS         **********/
 
 /**********		DEFINES		**********/
