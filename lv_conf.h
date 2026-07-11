@@ -110,7 +110,7 @@
  * - LV_OS_MQX
  * - LV_OS_SDL2
  * - LV_OS_CUSTOM */
-#define LV_USE_OS   LV_OS_NONE
+#define LV_USE_OS   LV_OS_FREERTOS
 
 #if LV_USE_OS == LV_OS_CUSTOM
     #define LV_OS_CUSTOM_INCLUDE <stdint.h>
@@ -1102,7 +1102,7 @@
 #ifdef DEBUG
 	#define LV_USE_SYSMON 1
 #else
-    #define LV_USE_SYSMON 0
+    #define LV_USE_SYSMON 1
 #endif
 #if LV_USE_SYSMON
     /** Get the idle percentage. E.g. uint32_t my_get_idle(void); */
@@ -1117,12 +1117,12 @@
 
     /** 1: Show CPU usage and FPS count.
      *  - Requires `LV_USE_SYSMON = 1` */
-    #define LV_USE_PERF_MONITOR 0
+    #define LV_USE_PERF_MONITOR 1
     #if LV_USE_PERF_MONITOR
         #define LV_USE_PERF_MONITOR_POS LV_ALIGN_TOP_MID
 
         /** 0: Displays performance data on the screen; 1: Prints performance data using log. */
-        #define LV_USE_PERF_MONITOR_LOG_MODE 0
+        #define LV_USE_PERF_MONITOR_LOG_MODE 1
     #endif
 
     /** 1: Show used memory and memory fragmentation.
@@ -1477,7 +1477,7 @@
     #define LV_USE_DEMO_KEYPAD_AND_ENCODER 0
 
     /** Benchmark your system */
-    #define LV_USE_DEMO_BENCHMARK 0
+    #define LV_USE_DEMO_BENCHMARK 1
 
     #if LV_USE_DEMO_BENCHMARK
         /** Use fonts where bitmaps are aligned 16 byte and has Nx16 byte stride */
