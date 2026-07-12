@@ -10,6 +10,7 @@ extern "C" {
 #include "lvgl.h"
 /**********     DEFINES      **********/
 #define UI_COLOR_RED		lv_color_hex(0xdb1616)
+#define UI_COLOR_LIGHT_RED	lv_color_hex(0xdbc1c1)
 #define UI_COLOR_WHITE		lv_color_hex(0xfafafa)
 #define UI_COLOR_BLACK		lv_color_hex(0x000000)
 #define UI_COLOR_BLUE		lv_color_hex(0x0c65b3)
