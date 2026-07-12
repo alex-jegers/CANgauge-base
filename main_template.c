@@ -7,8 +7,6 @@
  *
  ******************************************************************************
  */
-#define TARGET_HARDWARE_CANGAUGE
-
 #include "cangauge.h"
 #include "demos/benchmark/lv_benchmark.h"
 
@@ -30,9 +28,6 @@ int main(void)
 
 	/* Load the menu screen. */
 	system_set_ui_init_cb(lv_benchmark);
-
-	/* Start the battery power monitor. */
-	pwr_monitor_run(3);
 
 	/* Starts the FreeRTOS scheduler. */
 	vTaskStartScheduler();
