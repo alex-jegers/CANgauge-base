@@ -7,7 +7,7 @@ extern "C" {
 #endif
 
 /**********     INCLUDES        **********/
-#include "stm32h745xx.h""
+#include "stm32h745xx.h"
 
 /**********     TYPEDEFS         **********/
 

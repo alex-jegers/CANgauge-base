@@ -7,7 +7,7 @@ extern "C" {
 #endif
 
 /**********     INCLUDES        **********/
-#include "lvgl/lvgl.h"
+#include "lvgl.h"
 /**********     DEFINES      **********/
 #define UI_COLOR_RED		lv_color_hex(0xdb1616)
 #define UI_COLOR_WHITE		lv_color_hex(0xfafafa)

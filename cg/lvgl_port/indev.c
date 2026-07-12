@@ -6,7 +6,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-#include "lvgl/lvgl.h"
+#include "lvgl.h"
 
 /**********		DEFINES		**********/
 
