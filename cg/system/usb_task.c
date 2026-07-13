@@ -2,6 +2,7 @@
 #include "usb_task.h"
 #include "drivers/drivers.h"
 #include "drivers/usb/stm32_usb_msc.h"
+#include "file_system/eeprom.h"
 
 /**********     TYPEDEFS         **********/
 

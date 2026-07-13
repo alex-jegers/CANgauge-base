@@ -12,6 +12,7 @@
 #include "drivers/drivers.h"
 #include "lvgl_port/lvgl_port_def.h"
 #include "ui_helpers/ui_helpers.h"
+#include "error_handler.h"
 
 
 /**********		DEFINES		**********/

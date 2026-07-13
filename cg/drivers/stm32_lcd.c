@@ -11,6 +11,11 @@
 #include "stm32_dma2d.h"	//For frame buffer control.
 #include "stm32_timer.h"	//For lcd backlight PWM.
 #include "stm32_spi.h"		//For initializing the ST7701 driver used on CANgauge config.
+
+//TODO: Do better so this doesnt need a freertos include.
+#include "FreeRTOS.h"
+#include "task.h"
+
 #include <assert.h>
 
 /*******STATIC VARIABLES************/

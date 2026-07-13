@@ -1,5 +1,6 @@
 /**********     INCLUDES        **********/
 #include "ui_helpers.h"
+#include "stdlib.h"
 /**********		DEFINES		**********/
 
 /**********		EXTERNAL VARIABLE DEFINITIONS		**********/
