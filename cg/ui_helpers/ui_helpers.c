@@ -7,9 +7,9 @@ static bool ui_demo_mode = false;
 /**********		STATIC VARIABLES		**********/
 
 /**********		STATIC FUNCTION DECLRATIONS		**********/
-static lv_event_cb_t ui_helpers_msgbox_close(lv_event_t* e);
+static void ui_helpers_msgbox_close(lv_event_t* e);
 /**********		STATIC FUNCTION DEFINITIONS		**********/
-static lv_event_cb_t ui_helpers_msgbox_close(lv_event_t* e)
+static void ui_helpers_msgbox_close(lv_event_t* e)
 {
 	lv_obj_t* btn = lv_event_get_target(e);
 	lv_obj_t* footer = lv_obj_get_parent(btn);
@@ -232,3 +232,30 @@ void ui_helpers_add_msgbox_close_btn(lv_obj_t* msgbox, void (*func)())
 	lv_obj_add_event_cb(close_btn, ui_helpers_msgbox_close, LV_EVENT_RELEASED, (void*)func);
 }
 
+lv_obj_t* ui_helpers_show_loading_wheel(const char* msg)
+{
+	lv_obj_t* container = lv_obj_create(lv_screen_active());
+	lv_obj_set_size(container, 250, 250);
+	lv_obj_center(container);
+	lv_obj_set_scrollbar_mode(container, LV_SCROLLBAR_MODE_OFF);
+	lv_obj_t* spinner = lv_spinner_create(container);
+	lv_obj_set_size(spinner, 80, 80);
+	lv_obj_align(spinner, LV_ALIGN_CENTER, 0, -40);
+	lv_obj_set_style_arc_width(spinner, 15, LV_PART_MAIN);
+	lv_obj_set_style_arc_width(spinner, 15, LV_PART_INDICATOR);
+	lv_obj_set_style_arc_color(spinner, UI_COLOR_RED, LV_PART_INDICATOR);
+	lv_spinner_set_anim_duration(spinner, 2000);
+	lv_spinner_set_arc_sweep(spinner, 270);
+
+	if (msg != NULL)
+	{
+		lv_obj_t* lbl = lv_label_create(container);
+		lv_obj_align(lbl, LV_ALIGN_CENTER, 0, 75);
+		lv_label_set_long_mode(lbl, LV_LABEL_LONG_MODE_WRAP);
+		lv_obj_set_width(lbl, lv_pct(100));
+		lv_label_set_text(lbl, msg);
+		lv_obj_set_style_text_align(lbl, LV_TEXT_ALIGN_CENTER, LV_STATE_DEFAULT);
+	}
+
+	return container;
+}
