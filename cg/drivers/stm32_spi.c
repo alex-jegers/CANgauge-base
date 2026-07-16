@@ -61,7 +61,8 @@ void spi_deinit(SPI_TypeDef* spi)
 	if (spi == SPI4)
 	{
 		NVIC_DisableIRQ(SPI4_IRQn);
-		RCC->APB2RSTR = RCC_APB2RSTR_SPI4RST;	//TODO: RCC function for this.
+		RCC->APB2RSTR |= RCC_APB2RSTR_SPI4RST;	//TODO: RCC function for this.
+		RCC->APB2RSTR &= ~(RCC_APB2RSTR_SPI4RST);	//TODO: RCC function for this.
 	}
 }
 
