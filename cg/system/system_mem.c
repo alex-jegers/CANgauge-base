@@ -85,18 +85,35 @@ SYS_MEM_REGION_RAM_EXE void sys_mem_flash_write_sector(uint8_t sector, void* src
     /* Bank start address. */
     uint32_t sector_saddr = (sector * 0x20000) + 0x08000000;
 
-    /* Save the whole bank back to FLASH. */
-    flash_b1_unlock();
-    flash_b1_erase(sector);
-    while (flash_b1_qw_status()) {}
-    flash_b1_enable_write();
-    for (uint32_t i = 0; i < 0x20000; i+= 0x20)
-    {
-    	prv_memcpy((uint8_t*)sector_saddr + i, (uint8_t*)src + i, 0x20);
-        while (flash_b1_qw_status()) {}
-    }
-    flash_b1_disable_write();
-    flash_b1_lock();
+
+	if (sector < 8)
+	{
+		flash_b1_unlock();
+		flash_b1_erase(sector);
+		while (flash_b1_qw_status()) {}
+		flash_b1_enable_write();
+		for (uint32_t i = 0; i < 0x20000; i+= 0x20)
+		{
+			prv_memcpy((uint8_t*)sector_saddr + i, (uint8_t*)src + i, 0x20);
+			while (flash_b1_qw_status()) {}
+		}
+		flash_b1_disable_write();
+		flash_b1_lock();
+	}
+	else
+	{
+		flash_b2_unlock();
+		flash_b2_erase(sector);
+		while (flash_b2_qw_status()) {}
+		flash_b2_enable_write();
+		for (uint32_t i = 0; i < 0x20000; i+= 0x20)
+		{
+			prv_memcpy((uint8_t*)sector_saddr + i, (uint8_t*)src + i, 0x20);
+			while (flash_b2_qw_status()) {}
+		}
+		flash_b2_disable_write();
+		flash_b2_lock();
+	}
 }
 
 uint8_t* sys_mem_get_ram_fs_ptr()
