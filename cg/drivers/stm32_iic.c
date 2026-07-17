@@ -174,7 +174,7 @@ void i2c_enable_timeout_detection(I2C_TypeDef* i2c)
 i2c_exit_code_t i2c_read(I2C_TypeDef* i2c, uint8_t slave_addr, uint16_t internal_addr, i2c_internal_addr_t internal_addr_type,
 				uint8_t* data, uint8_t num_bytes, bool auto_stop)
 {
-	if (xSemaphoreTakeRecursive(prv_i2c_mutex, portMAX_DELAY) == pdFALSE)
+	if (xSemaphoreTakeRecursive(prv_i2c_mutex, pdMS_TO_TICKS(500)) == pdFALSE)
 	{
 		return I2C_EXIT_CODE_ERR;
 	}
@@ -278,7 +278,7 @@ i2c_exit_code_t i2c_read(I2C_TypeDef* i2c, uint8_t slave_addr, uint16_t internal
 i2c_exit_code_t i2c_write(I2C_TypeDef* i2c, uint8_t slave_addr, uint16_t internal_addr, i2c_internal_addr_t internal_addr_type,
 				uint8_t* data, uint8_t num_bytes, bool auto_stop)
 {
-	if (xSemaphoreTakeRecursive(prv_i2c_mutex, portMAX_DELAY) == pdFALSE)
+	if (xSemaphoreTakeRecursive(prv_i2c_mutex, pdMS_TO_TICKS(500)) == pdFALSE)
 	{
 		return I2C_EXIT_CODE_ERR;
 	}

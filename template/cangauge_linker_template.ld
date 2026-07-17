@@ -54,7 +54,6 @@ MEMORY
   EXT_RAM (xrw) 	: ORIGIN = 0x70000000, LENGTH = 16M
 
 }
-
 /* Sections */
 SECTIONS
 {
@@ -72,13 +71,8 @@ SECTIONS
 		KEEP(*(.ram_d1));		
 	} >RAM_D1	
 
-  .config :
-  {
-    . = ALIGN(4);
-  } >FLASH2
-	
-
   /* The startup code into "FLASH" Rom type memory */
+  _israddr = LOADADDR(.isr_vector);
   .isr_vector :
   {
     . = ALIGN(4);

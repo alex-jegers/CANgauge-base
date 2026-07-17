@@ -57,7 +57,7 @@ Reset_Handler:
 
 
   /*Set interrupt vector offset register.*/
-  ldr 	r0, =0x08000000
+  ldr 	r0, =_israddr
   ldr	r1, =0xE000ED08
   str	r0, [r1]
 

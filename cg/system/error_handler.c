@@ -26,7 +26,20 @@ TaskFunction_t error_handler_task()
 	while(1)
 	{
 		xSemaphoreTake(prv_new_error_smphr, portMAX_DELAY);
-		sys_mem_set_config_data(prv_error_msg);
+//		/* Delete all other tasks. */
+//		static TaskStatus_t tasks_arr[20];
+//		const UBaseType_t task_arr_size = 20;
+//		uint32_t* total_runtime = NULL;
+//		UBaseType_t num_tasks = uxTaskGetSystemState(tasks_arr, task_arr_size, total_runtime);
+//		for (uint32_t i = 0; i < num_tasks; i++)
+//		{
+//			TaskHandle_t this_handle = tasks_arr[i].xHandle;
+//			if ((this_handle != prv_task_handle) && (strcmp("IDLE", tasks_arr[i].pcTaskName) != 0))
+//			{
+//				vTaskDelete(tasks_arr[i].xHandle);
+//			}
+//		}
+//		sys_mem_set_config_data(prv_error_msg);
 		rcc_sw_reset();
 	}
 }
