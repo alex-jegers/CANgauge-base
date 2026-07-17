@@ -27,7 +27,7 @@ extern "C" {
 #define BLOCK_SIZE_EEPROM		1
 #define NUM_SECTORS_EEPROM		0x1FFFF / SECTOR_SIZE_EEPROM
 
-#define SYS_MEM_CONFIG_FILE_PATH		"0:/System Data.txt"
+#define SYS_MEM_CONFIG_FILE_PATH		"0:/System Data.txt"        //TODO: move to application code.
 
 /**********     GLOBAL VARIABLE DECLRATIONS     **********/
 
