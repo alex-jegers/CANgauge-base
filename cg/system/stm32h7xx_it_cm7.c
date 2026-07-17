@@ -47,6 +47,7 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
     uint32_t pc;
+    __disable_irq();
     __asm__ volatile ("mov %0, pc" : "=r" (pc));
     static char error_str[50];
     sprintf(error_str, "LAST ERROR,HARDFAULT,%x, %s, %s\n", (unsigned int)pc, VERSION, BUILD_TYPE_STR);
