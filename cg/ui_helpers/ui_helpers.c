@@ -212,12 +212,11 @@ lv_obj_t* ui_helpers_show_msgbox(const char* text, const char* btn_text, lv_even
 {
 	lv_obj_t* msg_box = lv_msgbox_create(lv_layer_top());
 	lv_msgbox_add_text(msg_box, text);
-	//lv_msgbox_add_close_button(msg_box);
-
 
 	if (btn_text != NULL)
 	{
 		lv_obj_t* user_btn = lv_msgbox_add_footer_button(msg_box, btn_text);
+		lv_obj_set_style_bg_color(user_btn, UI_COLOR_RED, LV_STATE_DEFAULT);
 		if (func != NULL)
 		{
 			lv_obj_add_event_cb(user_btn, func, LV_EVENT_RELEASED, NULL);
@@ -231,6 +230,7 @@ void ui_helpers_add_msgbox_close_btn(lv_obj_t* msgbox, void (*func)())
 {
 	lv_obj_t* close_btn = lv_msgbox_add_footer_button(msgbox, "Close");
 	lv_obj_add_event_cb(close_btn, ui_helpers_msgbox_close, LV_EVENT_RELEASED, (void*)func);
+	lv_obj_set_style_bg_color(close_btn, UI_COLOR_RED, LV_STATE_DEFAULT);
 }
 
 lv_obj_t* ui_helpers_show_loading_wheel(const char* msg)
