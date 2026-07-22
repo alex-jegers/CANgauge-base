@@ -76,7 +76,7 @@ uint32_t sys_mem_get_config_data(const char* data_to_get, char* data_buf);
  */
 void sys_mem_set_config_data(char* data);
 
-void sys_mem_create_default_config_file();
+FRESULT sys_mem_create_default_config_file();
 
 /**
  * sys_mem_csv_split	TODO:find a better file to put this.

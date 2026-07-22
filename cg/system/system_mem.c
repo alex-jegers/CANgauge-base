@@ -229,17 +229,20 @@ void sys_mem_set_config_data(char* data)
 	free(line);
 }
 
-void sys_mem_create_default_config_file()
+FRESULT sys_mem_create_default_config_file()
 {
 	FIL config_file;
 	FRESULT res;
 	f_unlink(SYS_MEM_CONFIG_FILE_PATH);		//Unlink the old one incase it's still there.
 	res = f_open(&config_file, SYS_MEM_CONFIG_FILE_PATH, FA_CREATE_ALWAYS | FA_WRITE);
+	if (res != FR_OK) { return res; }
+
 	const char* const config_str = "LAST GAUGES STATE,0,0,0,0,\nBRIGHTNESS,65535,\nPRESSURE UNITS,kPa,\nTEMPERATURE UNITS,C,\nLAST ERROR,NONE,\n";
 	uint32_t len = strlen(config_str);
 	uint32_t bw = 0;
-	f_write(&config_file, config_str, (UINT)len, (UINT*)&bw);
+	res = f_write(&config_file, config_str, (UINT)len, (UINT*)&bw);
 	f_close(&config_file);
+	return res;
 }
 
 char* sys_mem_csv_split(char* str, uint32_t index)
