@@ -10,6 +10,7 @@
 #include "stm32_io.h"
 #include "stm32_rcc.h"
 #include <string.h>
+#include <assert.h>
 
 #define TEST_ADDR				*(uint32_t*)0xD0000000
 
@@ -128,7 +129,8 @@ void fmc_init_sdram()
 	FMC_Bank5_6_R->SDRTR = 156;
 
 	/* Set it all to zeros. */
-	memset((uint8_t*)0xD0000000, 0, 16000000);
+	memset((uint8_t*)0x70000000, 0xA5, 16000000);
+
 
 }
 
