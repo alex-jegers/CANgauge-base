@@ -12,8 +12,8 @@ static TaskHandle_t prv_runtime_stats_handle = NULL;
 static TaskHandle_t prv_heap_stats_handle = NULL;
 /**********		STATIC FUNCTION DECLRATIONS		**********/
 static void prv_high_freq_timer_tick_int();
-static TaskFunction_t prv_runtime_stats_task();
-static TaskFunction_t prv_heap_stats_task();
+static void prv_runtime_stats_task();
+static void prv_heap_stats_task();
 
 /**********		STATIC FUNCTION DEFINITIONS		**********/
 static void prv_high_freq_timer_tick_int()
@@ -21,9 +21,9 @@ static void prv_high_freq_timer_tick_int()
 	timer_us_inc(10);
 }
 
-static TaskFunction_t prv_runtime_stats_task()
+static void prv_runtime_stats_task(void* args)
 {
-	static char* buf[500];
+	static char buf[500];
 	while (1)
 	{
 		vTaskDelay(5000);
@@ -31,7 +31,7 @@ static TaskFunction_t prv_runtime_stats_task()
 	}
 }
 
-static TaskFunction_t prv_heap_stats_task()
+static void prv_heap_stats_task(void* args)
 {
 
 	while(1)
@@ -40,7 +40,6 @@ static TaskFunction_t prv_heap_stats_task()
 		free(buf);
 		vTaskDelay(1000);
 	}
-	return 0;
 }
 
 /**********		GLOBAL FUNCTION DEFINITIONS		**********/
@@ -85,6 +84,5 @@ Successful Frees: %d", stats.xAvailableHeapSpaceInBytes,
 						stats.xSizeOfLargestFreeBlockInBytes, stats.xSizeOfSmallestFreeBlockInBytes,
 						stats.xNumberOfFreeBlocks, stats.xMinimumEverFreeBytesRemaining,
 						stats.xNumberOfSuccessfulAllocations, stats.xNumberOfSuccessfulFrees);
-	realloc(buf, bytes);
 	return buf;
 }

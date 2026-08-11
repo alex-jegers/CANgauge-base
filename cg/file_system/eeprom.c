@@ -22,7 +22,7 @@
 bool eeprom_present()
 {
 	uint32_t mfg_data = 0;
-	i2c_read(I2C4, EEPROM_HOST_CODE, EEPROM_IIC_ADDR, I2C_INTERNAL_ADDR_8_BIT, &mfg_data, 4, false);
+	i2c_read(I2C4, EEPROM_HOST_CODE, EEPROM_IIC_ADDR, I2C_INTERNAL_ADDR_8_BIT, (uint8_t*)&mfg_data, 4, false);
 	if (mfg_data != 0x00d0d000)
 	{
 		return false;

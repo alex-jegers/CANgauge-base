@@ -16,10 +16,10 @@ static StaticTask_t prv_task_tcb;						//The TCB for the task.
 static TaskHandle_t prv_task_handle;					//The task handle.
 
 /**********		STATIC FUNCTION DECLRATIONS		**********/
-TaskFunction_t error_handler_task();
+static void error_handler_task();
 
 /**********		STATIC FUNCTION DEFINITIONS		**********/
-TaskFunction_t error_handler_task()
+static void error_handler_task(void* arg)
 {
 	prv_new_error_smphr = xSemaphoreCreateBinaryStatic(&prv_new_error_smphr_buf);		//Should never fail.
 

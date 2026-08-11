@@ -23,6 +23,7 @@
 #include "queue.h"
 #include "semphr.h"
 #include "event_groups.h"
+#include "timers.h"
 
 #include "system_mem.h"
 

@@ -190,53 +190,6 @@ typedef struct __attribute__((packed))
 /**********		EXTERNAL VARIABLE DEFINITIONS		**********/
 
 /**********		STATIC VARIABLES		**********/
-static usb_setup_packet_t usb_setup_struct;
-static uint16_t usb_device_status = 0;
-
-static usb_config_descriptor_t usb_configuration_descriptor =
-{
-	.bLength = 0x9,
-	.bDescriptorType = 0x2,
-	.wTotalLength = 0,		//Set later.
-	.bNumInterfaces = 1,
-	.bConfigurationValue = 1,
-	.iConfiguration = 0x0,
-	.bmAttributes = (1 << 6) | (1 << 7),
-	.bMaxPower = 150,
-};
-
-static usb_interface_descriptor_t usb_interface_descriptor =
-{
-	.bLength = 0x9,
-	.bDescriptorType = USB_DESC_TYPE_INTERFACE,		//4
-	.bInterfaceNumber = 0,
-	.bAlternateSetting = 0,
-	.bNumEndpoints = 2,
-	.bInterfaceClass = 0x08,		//Mass Storage Class
-	.bInterfaceSubClass = 0x06,		//SCSI transparent command set.
-	.bInterfaceProtocol = 0x50,		//Bulk only communication.
-	.iInterface = 0x00,
-};
-
-static usb_endpoint_descriptor_t usb_endpoint_descriptor_IN1 =
-{
-	.bLength = 0x07,
-	.bDescriptorType = USB_DESC_TYPE_ENDPOINT,
-	.bEndpointAddress = (1 << 7) | 1,			//IN EP, num 1.
-	.bmAttributes = 0x02,
-	.wMaxPacketSize = 0x40,
-	.bInterval = 0
-};
-
-static usb_endpoint_descriptor_t usb_endpoint_descriptor_OUT1 =
-{
-	.bLength = 0x07,
-	.bDescriptorType = USB_DESC_TYPE_ENDPOINT,
-	.bEndpointAddress = (0 << 7) | 1,			//OUT EP, num 1.
-	.bmAttributes = 0x02,
-	.wMaxPacketSize = 0x40,
-	.bInterval = 0
-};
 
 /**********     GLOBAL VARIABLE DECLRATIONS     **********/
 

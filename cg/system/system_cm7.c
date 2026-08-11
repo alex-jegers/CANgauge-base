@@ -39,13 +39,13 @@ static void (*prv_ui_init_cb)();		//Function pointer for the application to call
 
 /**********     STATIC FUNCTION DECLARATIONS     **********/
 
-static TaskFunction_t prv_task_blink();
-static TaskFunction_t prv_system_error_handler();
+static void prv_task_blink(void* args);
 static void prv_lcd_bl_init();
 
 /**********     STATIC FUNCTION DEFINITIONS     **********/
-static TaskFunction_t prv_task_blink(const uint32_t delay_time_ms)
+static void prv_task_blink(void* args)
 {
+	uint32_t delay_time_ms = (uint32_t)args;
 	/* Create the private event group if it hasnt been created yet. */
 	if (prv_event_group == NULL)
 	{
@@ -78,11 +78,11 @@ static void prv_lcd_bl_init()
 	//TODO: Double check this PWM code.
 	/* Read the backlight value from the config file. */
 	char backlight_str[17];
-	sys_mem_get_config_data("BRIGHTNESS", &backlight_str);
+	sys_mem_get_config_data("BRIGHTNESS", backlight_str);
 
 	char* sv_ptr;
 	char* split[2];
-	split[0] = strtok_r(&backlight_str, ",", &sv_ptr);
+	split[0] = strtok_r(backlight_str, ",", &sv_ptr);
 	split[1] = strtok_r(NULL, ",", &sv_ptr);
 	uint32_t backlight_int = atoi(split[1]);
 
@@ -187,7 +187,7 @@ void system_blink_run(const uint32_t delay_time_ms)
 		vTaskResume(prv_task_handle_blink);
 		return;
 	}
-	xTaskCreate((TaskFunction_t)prv_task_blink, "SYS_BLINK", 600 / 4, (void*)delay_time_ms, 4, &prv_task_handle_blink);
+	xTaskCreate(prv_task_blink, "SYS_BLINK", 600 / 4, (void*)delay_time_ms, 4, &prv_task_handle_blink);
 
 }
 

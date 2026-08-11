@@ -34,7 +34,7 @@ static SemaphoreHandle_t prv_i2c_mutex = NULL;
 
 static uint8_t i2c_get_data(I2C_TypeDef* i2c);
 static void i2c_write_data(I2C_TypeDef* i2c, uint8_t data);
-static void prv_timer_cb_timeout(TimerHandle_t* timer);				//Callback for FreeRTOS timer.
+static void prv_timer_cb_timeout(TimerHandle_t timer);				//Callback for FreeRTOS timer.
 static int8_t prv_start_timer();
 static void prv_clear_timer();
 
@@ -48,7 +48,7 @@ static void i2c_write_data(I2C_TypeDef* i2c, uint8_t data)
 	i2c->TXDR = data;
 }
 
-static void prv_timer_cb_timeout(TimerHandle_t* timer)
+static void prv_timer_cb_timeout(TimerHandle_t timer)
 {
 	prv_timeout = true;
 	i2c_bus_reset(I2C4);

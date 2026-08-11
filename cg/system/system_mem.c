@@ -118,7 +118,7 @@ SYS_MEM_REGION_RAM_EXE void sys_mem_flash_write_sector(uint8_t sector, void* src
 
 uint8_t* sys_mem_get_ram_fs_ptr()
 {
-	return &system_mem_ram_file_system;
+	return system_mem_ram_file_system;
 }
 
 uint32_t sys_mem_get_config_data(const char* data_to_get, char* data_buf)
