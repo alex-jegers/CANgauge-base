@@ -106,7 +106,7 @@ static void prv_init()
 	i2c_enable(I2C_INST);
 
 	/*Put the screen in normal mode.*/
-	const uint8_t work_mode_val = CST830_WORK_MODE_NORMAL;
+	//const uint8_t work_mode_val = CST830_WORK_MODE_NORMAL;
 	//i2c_write(I2C_INST, CST830_SLAVE_ADDR, CST830_WORK_MODE, &work_mode_val, 2, true);
 
 	const uint8_t auto_sleep_val = CST820_DISAUTOSLEEP_ON;
