@@ -80,6 +80,7 @@ void sys_mem_init_file_systems()
 	f_close(&temp);
 
 	f_setlabel("CANgauge");
+	f_setlabel("1:CANgauge");
 }
 
 SYS_MEM_REGION_RAM_EXE void sys_mem_flash_write_sector(uint8_t sector, void* src)
