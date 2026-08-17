@@ -254,7 +254,7 @@ lv_obj_t* ui_helpers_show_loading_wheel(const char* msg)
 	lv_obj_set_style_arc_width(spinner, 15, LV_PART_MAIN);
 	lv_obj_set_style_arc_width(spinner, 15, LV_PART_INDICATOR);
 	lv_obj_set_style_arc_color(spinner, UI_COLOR_RED, LV_PART_INDICATOR);
-	lv_spinner_set_anim_duration(spinner, 2000);
+	lv_spinner_set_anim_duration(spinner, 750);
 	lv_spinner_set_arc_sweep(spinner, 270);
 
 	if (msg != NULL)
