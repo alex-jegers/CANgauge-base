@@ -38,7 +38,7 @@
 /* This option switches fast seek feature. (0:Disable or 1:Enable) */
 
 
-#define FF_USE_EXPAND	0
+#define FF_USE_EXPAND	1
 /* This option switches f_expand(). (0:Disable or 1:Enable) */
 
 
@@ -47,7 +47,7 @@
 /  (0:Disable or 1:Enable) Also FF_FS_READONLY needs to be 0 to enable this option. */
 
 
-#define FF_USE_LABEL	0
+#define FF_USE_LABEL	1
 /* This option switches volume label API functions, f_getlabel() and f_setlabel().
 /  (0:Disable or 1:Enable) */
 
@@ -58,7 +58,7 @@
 
 #define FF_USE_STRFUNC	1
 #define FF_PRINT_LLI	0
-#define FF_PRINT_FLOAT	0
+#define FF_PRINT_FLOAT	1
 #define FF_STRF_ENCODE	0
 /* FF_USE_STRFUNC switches string API functions, f_gets(), f_putc(), f_puts() and
 /  f_printf().
@@ -153,7 +153,7 @@
 /  on character encoding. When LFN is not enabled, these options have no effect. */
 
 
-#define FF_FS_RPATH		0
+#define FF_FS_RPATH		1
 /* This option configures support for relative path feature.
 /
 /   0: Disable relative path and remove related API functions.

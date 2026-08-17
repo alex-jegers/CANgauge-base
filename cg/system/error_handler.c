@@ -55,3 +55,17 @@ BaseType_t error_handler_log_from_isr(char* log)
 	xSemaphoreGiveFromISR(prv_new_error_smphr, &higher_pri_task_woken);
 	return higher_pri_task_woken;
 }
+
+void error_show_msgbox(char* msg)
+{
+	assert( lv_port_take_lvgl_mutex(500) );
+	lv_obj_t* msg_box = ui_helpers_show_msgbox(msg, NULL, NULL);
+	ui_helpers_add_msgbox_close_btn(msg_box, NULL);
+	lv_port_give_lvgl_mutex();
+}
+
+void error_show_msgbox_from_lvgl_task(char* msg)
+{
+	lv_obj_t* msg_box = ui_helpers_show_msgbox(msg, NULL, NULL);
+	ui_helpers_add_msgbox_close_btn(msg_box, NULL);
+}

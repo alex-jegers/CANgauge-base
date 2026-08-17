@@ -1,13 +1,14 @@
 
-#ifndef _ERROR_HANDLER_H_
-#define _ERROR_HANDLER_H_
+#ifndef _FILESYS_HELPERS_H_
+#define _FILESYS_HELPERS_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /**********     INCLUDES        **********/
-#include "cangauge.h"
+#include "file_system/fatfs/ff.h"
+#include "file_system/fatfs/diskio.h"
 /**********     TYPEDEFS         **********/
 
 /**********     DEFINES      **********/
@@ -21,20 +22,12 @@ extern "C" {
  *      params:
  *      returns:
  */
-void error_handler_run();
+uint32_t filesys_get_free_space(const char* drive);
 
-/**
- * error_handler_log_from_isr:
- * 		returns: higher_pri_task_woken to be passed into portYIELD_FROM_ISR().
- */
-BaseType_t error_handler_log_from_isr(char* log);
-
-void error_show_msgbox(char* msg);
-void error_show_msgbox_from_lvgl_task(char* msg);
 
 
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif
 
-#endif  //_ERROR_HANDLER_H_
+#endif  //_TEMPLATE_H_

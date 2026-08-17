@@ -25,6 +25,7 @@ extern "C" {
  * FatFS file system functions and types.
  */
 #include "file_system/fatfs/ff.h"
+#include "file_system/filesys_helpers.h"
 
 /**
  * Hardware level drivers.

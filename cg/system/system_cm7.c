@@ -127,18 +127,6 @@ void system_task_init()
 		prv_ui_init_cb();
 	}
 
-	char last_error_str[50];
-	memset(last_error_str, 0, 50 * sizeof(char));
-	sys_mem_get_config_data("LAST ERROR", last_error_str);
-	char* error_code_str = sys_mem_csv_split(last_error_str, 1);
-	if (strcmp((const char*)error_code_str, "NONE") != 0)
-	{
-		sys_mem_get_config_data("LAST ERROR", last_error_str);
-		lv_obj_t* error_msgbox = ui_helpers_show_msgbox(last_error_str, NULL, NULL);
-		ui_helpers_add_msgbox_close_btn(error_msgbox, NULL);
-		sys_mem_set_config_data("LAST ERROR,NONE,\n");
-	}
-
 	vTaskDelete(NULL);
 }
 

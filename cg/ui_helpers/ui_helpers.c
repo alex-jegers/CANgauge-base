@@ -2,10 +2,19 @@
 #include "ui_helpers.h"
 #include "stdlib.h"
 /**********		DEFINES		**********/
-
+#define PRV_HIDDEN_KEY(width)	(lv_buttonmatrix_ctrl_t)(LV_BUTTONMATRIX_CTRL_HIDDEN | width)
 /**********		EXTERNAL VARIABLE DEFINITIONS		**********/
 static bool ui_demo_mode = false;
 /**********		STATIC VARIABLES		**********/
+static lv_obj_t* prv_number_pad = NULL;
+static const char* prv_number_pad_map[] = { "1", "2", "3", "\n",
+											" ","4", "5", "6", " ", "\n",
+											" ", "7", "8", "9", " ", "\n",
+											" ", LV_SYMBOL_OK, "0", LV_SYMBOL_BACKSPACE, " ", NULL};
+static const lv_buttonmatrix_ctrl_t prv_number_pad_ctrl[] = { LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8,
+															PRV_HIDDEN_KEY(LV_BUTTONMATRIX_CTRL_WIDTH_1), LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8, PRV_HIDDEN_KEY(LV_BUTTONMATRIX_CTRL_WIDTH_1),
+															PRV_HIDDEN_KEY(LV_BUTTONMATRIX_CTRL_WIDTH_3), LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8, PRV_HIDDEN_KEY(LV_BUTTONMATRIX_CTRL_WIDTH_3),
+															PRV_HIDDEN_KEY(LV_BUTTONMATRIX_CTRL_WIDTH_6), LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8, PRV_HIDDEN_KEY(LV_BUTTONMATRIX_CTRL_WIDTH_6)};
 
 /**********		STATIC FUNCTION DECLRATIONS		**********/
 static void ui_helpers_msgbox_close(lv_event_t* e);
@@ -57,7 +66,7 @@ lv_obj_t* ui_helpers_create_btn_with_text(lv_obj_t* parent, char* text, lv_font_
 	return temp_btn;
 }
 
-lv_obj_t* ui_helpers_create_checkbox_with_text(lv_obj_t* parent, char* text, lv_font_t* font)
+lv_obj_t* ui_helpers_create_checkbox_with_text(lv_obj_t* parent, const char* text, lv_font_t* font)
 {
 	lv_obj_t* temp_checkbox;
 	temp_checkbox = lv_checkbox_create(parent);
@@ -259,4 +268,27 @@ lv_obj_t* ui_helpers_show_loading_wheel(const char* msg)
 	}
 
 	return container;
+}
+
+lv_obj_t* ui_helpers_load_number_pad()
+{
+	if (prv_number_pad == NULL)
+	{
+		prv_number_pad = lv_keyboard_create(lv_layer_top());
+		lv_keyboard_set_map(prv_number_pad, LV_KEYBOARD_MODE_USER_1, prv_number_pad_map, prv_number_pad_ctrl);
+		lv_keyboard_set_mode(prv_number_pad, LV_KEYBOARD_MODE_USER_1);
+		lv_obj_set_width(prv_number_pad, lv_pct(100));
+		lv_obj_set_style_pad_bottom(prv_number_pad, 30, LV_STATE_DEFAULT);
+		return prv_number_pad;
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
+void ui_helpers_delete_number_pad()
+{
+	lv_obj_delete(prv_number_pad);
+	prv_number_pad = NULL;
 }
