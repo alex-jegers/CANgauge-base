@@ -57,6 +57,8 @@ extern "C" {
 #define rcc_disable_pll_3q()    RCC->PLLCFGR &= ~(RCC_PLLCFGR_DIVQ3EN | RCC_PLL1DIVR_R1)
 #define rcc_disable_pll_3r()	RCC->PLLCFGR &= ~(RCC_PLLCFGR_DIVR3EN | RCC_PLL1DIVR_R1)
 
+#define rcc_enable_lsi()			RCC->CSR |= RCC_CSR_LSION; while ((RCC->CSR & RCC_CSR_LSIRDY) == 0) {}
+
 #define rcc_reset_usb2otg()			RCC->AHB1RSTR |= RCC_AHB1RSTR_USB2OTGFSRST
 #define rcc_clr_reset_usb2otg()		RCC->AHB1RSTR &= ~(RCC_AHB1RSTR_USB2OTGFSRST)
 
