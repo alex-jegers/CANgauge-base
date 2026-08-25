@@ -240,7 +240,13 @@ FRESULT sys_mem_create_default_config_file()
 	res = f_open(&config_file, SYS_MEM_CONFIG_FILE_PATH, FA_CREATE_ALWAYS | FA_WRITE);
 	if (res != FR_OK) { return res; }
 
-	const char* const config_str = "LAST GAUGES STATE,0,0,0,0,\nBRIGHTNESS,65535,\nPRESSURE UNITS,kPa,\nTEMPERATURE UNITS,C,\nDATA LOG RATE,100,\n";
+	const char* const config_str = "LAST GAUGES STATE,0,0,0,0,\n	\
+									BRIGHTNESS,65535,\n 			\
+									PRESSURE UNITS,kPa,\n 		\
+									TEMPERATURE UNITS,C,\n 		\
+									SPEED UNITS,kph,\n 			\
+									TORQUE UNITS,Nm\n			\
+									DATA LOG RATE,100,\n";
 	uint32_t len = strlen(config_str);
 	uint32_t bw = 0;
 	res = f_write(&config_file, config_str, (UINT)len, (UINT*)&bw);
