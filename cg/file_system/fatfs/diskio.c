@@ -113,9 +113,15 @@ DRESULT disk_read (
 		uint32_t phy_addr = sector * SECTOR_SIZE_EEPROM;
 		uint32_t num_bytes = SECTOR_SIZE_EEPROM * count;
 
-		eeprom_read(buff, phy_addr, num_bytes);
+		if (eeprom_read(buff, phy_addr, num_bytes) == EEPROM_STS_OK)
+		{
+			res = RES_OK;
+		}
+		else
+		{
+			res = RES_ERROR;
+		}
 
-		res = RES_OK;
 		break;
 	case DEV_RAM:
 		uint8_t* starting_addr = ram_fs_buf + (sector * SECTOR_SIZE_RAM);
