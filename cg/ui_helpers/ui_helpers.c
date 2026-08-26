@@ -46,7 +46,7 @@ void ui_helpers_set_demo_mode(bool demo_mode)
 	ui_demo_mode = demo_mode;
 }
 
-lv_obj_t* ui_helpers_create_btn_with_text(lv_obj_t* parent, char* text, lv_font_t* font)
+lv_obj_t* ui_helpers_create_btn_with_text(lv_obj_t* parent, const char* text, const lv_font_t* font)
 {
 	lv_obj_t* temp_btn;
 	lv_obj_t* temp_lbl;
@@ -66,12 +66,12 @@ lv_obj_t* ui_helpers_create_btn_with_text(lv_obj_t* parent, char* text, lv_font_
 	return temp_btn;
 }
 
-lv_obj_t* ui_helpers_create_checkbox_with_text(lv_obj_t* parent, const char* text, lv_font_t* font)
+lv_obj_t* ui_helpers_create_checkbox_with_text(lv_obj_t* parent, const char* text, const lv_font_t* font)
 {
 	lv_obj_t* temp_checkbox;
 	temp_checkbox = lv_checkbox_create(parent);
 	lv_checkbox_set_text(temp_checkbox, text);
-	lv_obj_align(temp_checkbox, LV_ALIGN_LEFT_MID, 0, 0);
+	//lv_obj_align(temp_checkbox, LV_ALIGN_LEFT_MID, 0, 0);
 	lv_obj_set_style_text_color(temp_checkbox, UI_COLOR_WHITE, LV_STATE_DEFAULT);
 	lv_obj_set_style_border_color(temp_checkbox, UI_COLOR_RED, LV_STATE_DEFAULT | LV_PART_INDICATOR);
 	lv_obj_set_style_bg_color(temp_checkbox, UI_COLOR_RED, LV_STATE_CHECKED | LV_PART_INDICATOR);

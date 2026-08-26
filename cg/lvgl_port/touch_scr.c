@@ -161,7 +161,7 @@ static void prv_task_update(touch_info_t* p_touch_data)
 
 	}
 	/* Enable autosleep. */
-	const uint8_t auto_sleep_val = CST820_DISAUTOSLEEP_OFF;
+	uint8_t auto_sleep_val = CST820_DISAUTOSLEEP_OFF;
 	i2c_write(I2C_INST, CST830_SLAVE_ADDR, CST820_DISAUTOSLEEP, I2C_INTERNAL_ADDR_8_BIT, &auto_sleep_val, 2, true);
 	xEventGroupSetBits(prv_event_group, EVENT_BITS_TASK_STOPPED);
 	vTaskDelete(NULL);
