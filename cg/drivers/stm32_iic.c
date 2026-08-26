@@ -66,7 +66,6 @@ static int8_t prv_start_timer()
 	{
 		return -1;
 	}
-
 	return 0;
 }
 
@@ -169,6 +168,7 @@ void i2c_disable_clk_stretch(I2C_TypeDef* i2c)
 void i2c_enable_timeout_detection(I2C_TypeDef* i2c)
 {
 	prv_timer_timeout = xTimerCreate("I2C_TIMER", pdMS_TO_TICKS(100), pdFALSE, NULL, prv_timer_cb_timeout);
+	vTimerSetReloadMode(prv_timer_timeout, pdFALSE);
 }
 
 i2c_exit_code_t i2c_read(I2C_TypeDef* i2c, uint8_t slave_addr, uint16_t internal_addr, i2c_internal_addr_t internal_addr_type,
