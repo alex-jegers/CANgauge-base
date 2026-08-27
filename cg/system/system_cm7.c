@@ -103,7 +103,8 @@ void system_task_init()
 	/* Initialize the file systems. This has to come after I2C init bc EEPROM uses I2C. */
 	sys_mem_init_file_systems();
 
-	error_handler_run();
+	/* Initialize the file systems. This has to come after I2C init bc EEPROM uses I2C. */
+	sys_mem_init_file_systems(false);
 
 	/* This has to come after the file system because we save the screen brightness in the config file. */
 	prv_lcd_bl_init();

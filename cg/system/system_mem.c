@@ -23,7 +23,7 @@ SYS_MEM_REGION_RAM_EXE static void prv_memcpy(void* dest, void* src, size_t n_by
 }
 
 /**********		GLOBAL FUNCTION DEFINITIONS		**********/
-void sys_mem_init_file_systems()
+void sys_mem_init_file_systems(bool format)
 {
 	/* Create the file system. */
 	static FATFS fs_ram, fs_eeprom;           // Filesystem object
@@ -61,10 +61,10 @@ void sys_mem_init_file_systems()
 	FATFS* fs_ptr;
 	uint32_t free_clusters;
 	res = f_getfree("0:", &free_clusters, &fs_ptr);
-	if (res != FR_OK)
+	if ((res != FR_OK) || (format == true))
 	{
 		/* Create a file system if there isnt one. */
-		SYS_MEM_REGION_EXTERN_RAM static uint8_t work_eeprom[4096];	//TODO change to calloc.
+		SYS_MEM_REGION_EXTERN_RAM static uint8_t work_eeprom[4096];
 		memset(work_eeprom, 0, 4096);
 		res = f_mkfs("0:", &params_eeprom, &work_eeprom, 4096);
 		assert(res == FR_OK);
@@ -74,7 +74,7 @@ void sys_mem_init_file_systems()
 	res = f_open(&temp, SYS_MEM_CONFIG_FILE_PATH, FA_READ);
 	if (res != FR_OK)
 	{
-		res = f_open(&temp, SYS_MEM_CONFIG_FILE_PATH, FA_WRITE | FA_CREATE_NEW);
+		res = sys_mem_create_default_config_file();
 		assert(res == FR_OK || res == FR_EXIST);
 	}
 	f_close(&temp);

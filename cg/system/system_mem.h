@@ -8,7 +8,7 @@ extern "C" {
 
 /**********     INCLUDES        **********/
 #include "stm32h745xx.h"
-
+#include "stdbool.h"
 #include "file_system/fatfs/ff.h"
 #include "file_system/fatfs/diskio.h"
 
@@ -38,7 +38,7 @@ extern "C" {
  * 			is used for firmware updates, EEPROM is used for data logging
  * 			and a general save system.
  */
-void sys_mem_init_file_systems();
+void sys_mem_init_file_systems(bool format);
 
 /**
  * sys_mem_get_ram_fs_ptr:
