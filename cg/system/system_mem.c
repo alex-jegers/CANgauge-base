@@ -23,7 +23,7 @@ SYS_MEM_REGION_RAM_EXE static void prv_memcpy(void* dest, void* src, size_t n_by
 }
 
 /**********		GLOBAL FUNCTION DEFINITIONS		**********/
-void sys_mem_init_file_systems(bool format)
+void sys_mem_init_file_systems()
 {
 	/* Create the file system. */
 	static FATFS fs_ram, fs_eeprom;           // Filesystem object
@@ -61,7 +61,7 @@ void sys_mem_init_file_systems(bool format)
 	FATFS* fs_ptr;
 	uint32_t free_clusters;
 	res = f_getfree("0:", &free_clusters, &fs_ptr);
-	if ((res != FR_OK) || (format == true))
+	if (res != FR_OK)
 	{
 		/* Create a file system if there isnt one. */
 		SYS_MEM_REGION_EXTERN_RAM static uint8_t work_eeprom[4096];

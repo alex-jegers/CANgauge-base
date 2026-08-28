@@ -38,7 +38,7 @@ extern "C" {
  * 			is used for firmware updates, EEPROM is used for data logging
  * 			and a general save system.
  */
-void sys_mem_init_file_systems(bool format);
+void sys_mem_init_file_systems();
 
 /**
  * sys_mem_get_ram_fs_ptr:
