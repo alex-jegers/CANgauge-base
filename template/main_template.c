@@ -8,7 +8,7 @@
  ******************************************************************************
  */
 #include "cangauge.h"
-#include "demos/benchmark/lv_benchmark.h"
+#include "demos/benchmark/lv_demo_benchmark.h"
 
 int main(void)
 {
@@ -27,7 +27,7 @@ int main(void)
    	xTaskCreate(system_task_init, "SYS_INIT", 650, NULL, 5, NULL);
 
 	/* Load the menu screen. */
-	system_set_ui_init_cb(lv_benchmark);
+	system_set_ui_init_cb(lv_demo_benchmark);
 
 	/* Starts the FreeRTOS scheduler. */
 	vTaskStartScheduler();
