@@ -18,7 +18,7 @@
 /**********		STATIC FUNCTION DEFINITIONS		**********/
 
 /**********		GLOBAL FUNCTION DEFINITIONS		**********/
-SYS_MEM_REGION_RAM_EXE bool flash_b2_unlock()
+bool flash_b2_unlock()
 {
     /* Check to see if it's already locked, if it's unlocked, return.*/
     uint32_t lock = FLASH->CR2 & FLASH_CR_LOCK;
@@ -33,23 +33,23 @@ SYS_MEM_REGION_RAM_EXE bool flash_b2_unlock()
     return true;
 }
 
-SYS_MEM_REGION_RAM_EXE void flash_b2_enable_write()
+void flash_b2_enable_write()
 {
     FLASH->CR2 = FLASH_CR_PSIZE_64_BIT;
     FLASH->CR2 |= FLASH_CR_PG;
 }
 
-SYS_MEM_REGION_RAM_EXE void flash_b2_disable_write()
+void flash_b2_disable_write()
 {
     FLASH->CR2 &= ~(FLASH_CR_PG);
 }
 
-SYS_MEM_REGION_RAM_EXE void flash_b2_lock()
+void flash_b2_lock()
 {
     FLASH->CR2 |= FLASH_CR_LOCK;
 }
 
-SYS_MEM_REGION_RAM_EXE bool flash_b2_erase(uint8_t sector)
+bool flash_b2_erase(uint8_t sector)
 {
     if (sector > 7)
     {
@@ -64,17 +64,17 @@ SYS_MEM_REGION_RAM_EXE bool flash_b2_erase(uint8_t sector)
     return true;
 }
 
-SYS_MEM_REGION_RAM_EXE bool flash_b2_qw_status()
+bool flash_b2_qw_status()
 {
     return FLASH->SR2 & FLASH_SR_QW;
 }
 
-SYS_MEM_REGION_RAM_EXE void flash_b2_force_write()
+void flash_b2_force_write()
 {
     FLASH->CR2 |= FLASH_CR_FW;
 }
 
-SYS_MEM_REGION_RAM_EXE bool flash_b1_unlock()
+bool flash_b1_unlock()
 {
     /* Check to see if it's already locked, if it's unlocked, return.*/
     uint32_t lock = FLASH->CR1 & FLASH_CR_LOCK;
@@ -89,23 +89,23 @@ SYS_MEM_REGION_RAM_EXE bool flash_b1_unlock()
     return true;
 }
 
-SYS_MEM_REGION_RAM_EXE void flash_b1_enable_write()
+void flash_b1_enable_write()
 {
     FLASH->CR1 = FLASH_CR_PSIZE_64_BIT;
     FLASH->CR1 |= FLASH_CR_PG;
 }
 
-SYS_MEM_REGION_RAM_EXE void flash_b1_disable_write()
+void flash_b1_disable_write()
 {
     FLASH->CR1 &= ~(FLASH_CR_PG);
 }
 
-SYS_MEM_REGION_RAM_EXE void flash_b1_lock()
+void flash_b1_lock()
 {
     FLASH->CR1 |= FLASH_CR_LOCK;
 }
 
-SYS_MEM_REGION_RAM_EXE bool flash_b1_erase(uint8_t sector)
+ bool flash_b1_erase(uint8_t sector)
 {
     if (sector > 7)
     {
@@ -120,12 +120,12 @@ SYS_MEM_REGION_RAM_EXE bool flash_b1_erase(uint8_t sector)
     return true;
 }
 
-SYS_MEM_REGION_RAM_EXE bool flash_b1_qw_status()
+bool flash_b1_qw_status()
 {
     return FLASH->SR1 & FLASH_SR_QW;
 }
 
-SYS_MEM_REGION_RAM_EXE void flash_b1_force_write()
+void flash_b1_force_write()
 {
     FLASH->CR1 |= FLASH_CR_FW;
 }
