@@ -114,9 +114,8 @@ void i2c_init(I2C_TypeDef* i2c)
 	}		
 
 	/*I2C1,2,3 kernel clock selection.*/
-	RCC->D2CCIP2R &= (0x3 << RCC_D2CCIP2R_I2C123SEL_Pos);	//clear the bits.
+	RCC->D2CCIP2R &= ~(0x3 << RCC_D2CCIP2R_I2C123SEL_Pos);	//clear the bits.
 	RCC->D2CCIP2R |= RCC_D2CCIP2R_I2C123SEL_HSI;			//select the HSI as the kernel clock
-
 }
 
 
@@ -152,7 +151,12 @@ void i2c_set_clk_speed(I2C_TypeDef* i2c, i2c_clk_speed_t i2c_clk)
 
 void i2c_enable(I2C_TypeDef* i2c)
 {
-	i2c->CR1 |= I2C_CR1_PE;
+	i2c->CR1 |= I2C_CR1_PE | I2C_CR1_TXIE;		//Peripheral enable and transmit interrupt enable.
+}
+
+void i2c_disable(I2C_TypeDef* i2c)
+{
+	i2c->CR1 &= ~(I2C_CR1_PE | I2C_CR1_TXIE);
 }
 
 void i2c_disable_analog_filt(I2C_TypeDef* i2c)
@@ -167,7 +171,7 @@ void i2c_disable_clk_stretch(I2C_TypeDef* i2c)
 
 void i2c_enable_timeout_detection(I2C_TypeDef* i2c)
 {
-	prv_timer_timeout = xTimerCreate("I2C_TIMER", pdMS_TO_TICKS(100), pdFALSE, NULL, prv_timer_cb_timeout);
+	prv_timer_timeout = xTimerCreate("I2C_TIMER", pdMS_TO_TICKS(250), pdFALSE, NULL, prv_timer_cb_timeout);
 	vTimerSetReloadMode(prv_timer_timeout, pdFALSE);
 }
 
@@ -179,21 +183,32 @@ i2c_exit_code_t i2c_read(I2C_TypeDef* i2c, uint8_t slave_addr, uint16_t internal
 		return I2C_EXIT_CODE_ERR;
 	}
 
+	i2c_clear_status(i2c);
 	prv_start_timer();
 
+	/**
+	 * Check if the bus is busy, if it is this likely means that the last transaction failed
+	 * to complete due to a known errata (see ES0445 - Rev 6, section 2.19.6). Setting the APB
+	 * bus and I2C kernel clock to the ratio defined in this section doesn't help entirely and
+	 * sometimes the bus just needs to be reset.
+	 */
 	while ((i2c_status(I2C4) & I2C_ISR_BUSY) != 0)
 	{
-		if (prv_timeout == true)
-		{
-			i2c_bus_reset(i2c);
-			xSemaphoreGiveRecursive(prv_i2c_mutex);
-			return I2C_EXIT_CODE_TIMEOUT;
-		}
+		/* First check if arbitration was lost and return with that code if it was. */
 		if (i2c_status(i2c) & I2C_ISR_ARLO)
 		{
+			prv_clear_timer();
 			i2c_bus_reset(i2c);
 			xSemaphoreGiveRecursive(prv_i2c_mutex);
 			return I2C_EXIT_CODE_ARB_LOST;
+		}
+		else //Errata error as mentioned above.
+		{
+			prv_clear_timer();
+			i2c_disable(i2c);
+			i2c_enable(i2c);
+			xSemaphoreGiveRecursive(prv_i2c_mutex);
+			return I2C_EXIT_CODE_ERR;
 		}
 	}
 
@@ -210,10 +225,9 @@ i2c_exit_code_t i2c_read(I2C_TypeDef* i2c, uint8_t slave_addr, uint16_t internal
 	i2c->CR2 = slave_addr;						//set slave address and clear the rest of the register.
 	i2c->CR2 |= I2C_CR2_RD_WRN;						//set bit for requesting read.
 	i2c->CR2 |= num_bytes << I2C_CR2_NBYTES_Pos;	//set the number of bytes.
-	if (auto_stop == true)
-	{
-		//i2c->CR2 |= I2C_CR2_AUTOEND;					//enable auto stop.
-	}
+
+	i2c->CR2 |= I2C_CR2_AUTOEND;					//enable auto stop regardless.
+
 	i2c_clear_status(i2c);
 
 	i2c->CR2 |= I2C_CR2_START;						//start the transmission.
@@ -227,20 +241,19 @@ i2c_exit_code_t i2c_read(I2C_TypeDef* i2c, uint8_t slave_addr, uint16_t internal
 			*data = i2c_get_data(i2c);
 			data++;
 			x++;
+			if (x == num_bytes)
+			{
+				/* If we've transferred all the bytes check if the TC bit is set (it should be) and break. Otherwise break w an error. */
+				if (i2c_status(i2c) & (I2C_ISR_TC | I2C_ISR_STOPF))
+				{
+					rtn = I2C_EXIT_CODE_TC;
+					break;
+				}
+			}
 		}
 		if (i2c_status(i2c) & I2C_ISR_NACKF)
 		{
 			rtn = I2C_EXIT_CODE_NACK;
-			break;
-		}
-		if (i2c_status(i2c) & I2C_ISR_STOPF)
-		{
-			if (x == num_bytes)
-			{
-				rtn = I2C_EXIT_CODE_STOP;
-				break;
-			}
-			rtn = I2C_EXIT_CODE_ERR;
 			break;
 		}
 		if (i2c_status(i2c) & I2C_ISR_TIMEOUT)
@@ -253,16 +266,9 @@ i2c_exit_code_t i2c_read(I2C_TypeDef* i2c, uint8_t slave_addr, uint16_t internal
 			rtn = I2C_EXIT_CODE_ARB_LOST;
 			break;
 		}
-		if (i2c_status(i2c) & I2C_ISR_TC)
-		{
-			i2c->CR2 |= I2C_CR2_STOP;
-			rtn = I2C_EXIT_CODE_TC;
-			break;
-		}
-
 		if (prv_timeout)
 		{
-			rtn = -1;
+			rtn = I2C_EXIT_CODE_TIMEOUT;
 			break;
 		}
 
@@ -283,31 +289,40 @@ i2c_exit_code_t i2c_write(I2C_TypeDef* i2c, uint8_t slave_addr, uint16_t interna
 		return I2C_EXIT_CODE_ERR;
 	}
 
+	i2c_clear_status(i2c);
 	prv_start_timer();
 
+	/**
+	 * Check if the bus is busy, if it is this likely means that the last transaction failed
+	 * to complete due to a known errata (see ES0445 - Rev 6, section 2.19.6). Setting the APB
+	 * bus and I2C kernel clock to the ratio defined in this section doesn't help entirely and
+	 * sometimes the bus just needs to be reset.
+	 */
 	while ((i2c_status(I2C4) & I2C_ISR_BUSY) != 0)
 	{
-		if (prv_timeout == true)
+		/* First check if arbitration was lost and return with that code if it was. */
+		if (i2c_status(i2c) & I2C_ISR_ARLO)
 		{
+			prv_clear_timer();
+			i2c_bus_reset(i2c);
 			xSemaphoreGiveRecursive(prv_i2c_mutex);
-			return I2C_EXIT_CODE_TIMEOUT;
+			return I2C_EXIT_CODE_ARB_LOST;
+		}
+		else //Errata error as mentioned above.
+		{
+			prv_clear_timer();
+			i2c_disable(i2c);
+			i2c_enable(i2c);
+			xSemaphoreGiveRecursive(prv_i2c_mutex);
+			return I2C_EXIT_CODE_ERR;
 		}
 	}
 
-	i2c_clear_status(i2c);
 	i2c->ISR |= I2C_ISR_TXE;						//Flush the TXDR register.
 
 	if (internal_addr_type == I2C_INTERNAL_ADDR_8_BIT)
 	{
 		i2c->TXDR = internal_addr;						//send the internal address first.
-
-		/* If there are no data bytes and were only setting the internal address this will be the only thing we send
-		 * so check if we need to stop after it as well.
-		 */
-		if ((num_bytes == 0) && (auto_stop == true))
-		{
-			//i2c->CR2 |= I2C_CR2_STOP;
-		}
 		num_bytes++;
 	}
 	else if (internal_addr_type == I2C_INTERNAL_ADDR_16_BIT)
@@ -319,9 +334,14 @@ i2c_exit_code_t i2c_write(I2C_TypeDef* i2c, uint8_t slave_addr, uint16_t interna
 	i2c->CR2 = slave_addr;							//set slave address and clear the rest of the register.
 	i2c->CR2 |= num_bytes << I2C_CR2_NBYTES_Pos;	//set the number of bytes.
 
+	/* Set or clear the auto end bit. */
 	if (auto_stop == true)
 	{
-		//i2c->CR2 |= auto_stop << I2C_CR2_AUTOEND_Pos;	//set the auto end bit if needed.
+		i2c->CR2 |= 1 << I2C_CR2_AUTOEND_Pos;
+	}
+	else
+	{
+		i2c->CR2 &= ~(1 << I2C_CR2_AUTOEND_Pos);
 	}
 
 	i2c->CR2 |= I2C_CR2_START;						//start the transmission.
@@ -331,52 +351,43 @@ i2c_exit_code_t i2c_write(I2C_TypeDef* i2c, uint8_t slave_addr, uint16_t interna
 	while(1)
 	{
 
-		if (i2c_status(i2c) & I2C_ISR_TXE)
+		if (i2c_status(i2c) & I2C_ISR_TXIS)
 		{
-			if (bytes_transferred + 1 == num_bytes)		//If this next byte is the last one set the stop bit to send a stop signal after this bit.
-			{
-				if (auto_stop == true)
-				{
-					i2c->CR2 |= I2C_CR2_STOP;
-				}
-			}
+			bytes_transferred++;					//TXIS being set means that a byte was transferred out of TXDR.
 			/* Check if we need to transfer another internal address byte. */
-			if ((internal_addr_type == I2C_INTERNAL_ADDR_16_BIT) && (bytes_transferred == 0))
+			if ((internal_addr_type == I2C_INTERNAL_ADDR_16_BIT) && (bytes_transferred == 1))
 			{
 				i2c_write_data(i2c, (internal_addr & 0x00FF));			//Write the other half of the internal address.
 			}
+
 			/* Otherwise start sending data. */
 			else
 			{
 				i2c_write_data(i2c, *data);
 				data++;
 			}
+
+		}
+
+		/* If we've transferred all the bytes check if the TC bit is set (it should be) and break. Otherwise break w an error. */
+		if (i2c_status(i2c) & (I2C_ISR_TC | I2C_ISR_STOPF))
+		{
 			bytes_transferred++;
-		}
-
-
-		if (i2c_status(i2c) & I2C_ISR_NACKF)
-		{
-			rtn = I2C_EXIT_CODE_NACK;
-			break;
-		}
-
-		if (i2c_status(i2c) & I2C_ISR_TC)
-		{
-			rtn = I2C_EXIT_CODE_TC;
-			break;
-		}
-
-		if (i2c_status(i2c) & I2C_ISR_STOPF)
-		{
 			if (bytes_transferred == num_bytes)
 			{
 				rtn = I2C_EXIT_CODE_TC;
+				break;
 			}
 			else
 			{
 				rtn = I2C_EXIT_CODE_ERR;
+				break;
 			}
+		}
+
+		if (i2c_status(i2c) & I2C_ISR_NACKF)
+		{
+			rtn = I2C_EXIT_CODE_NACK;
 			break;
 		}
 
@@ -426,7 +437,7 @@ void i2c_bus_reset(I2C_TypeDef* i2c)
 
 int8_t i2c_probe(I2C_TypeDef* i2c)
 {
-	for (int8_t addr = 0; addr < 128; addr++)
+	for (int8_t addr = 0; addr < 127; addr++)
 	{
 		int8_t rtn = i2c_write(i2c, addr, 0x00, I2C_INTERNAL_ADDR_8_BIT, NULL, 0, false);
 		if (rtn == 0)

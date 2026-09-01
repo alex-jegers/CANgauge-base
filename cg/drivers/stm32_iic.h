@@ -40,6 +40,7 @@ typedef enum
 void i2c_init(I2C_TypeDef* i2c);
 void i2c_set_clk_speed(I2C_TypeDef* i2c, i2c_clk_speed_t clk_frq);
 void i2c_enable(I2C_TypeDef* i2c);
+void i2c_disable(I2C_TypeDef* i2c);
 void i2c_disable_analog_filt(I2C_TypeDef* i2c);
 void i2c_disable_clk_stretch(I2C_TypeDef* i2c);
 void i2c_enable_timeout_detection(I2C_TypeDef* i2c);
