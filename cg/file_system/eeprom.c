@@ -5,7 +5,7 @@
 #include "file_system/fatfs/diskio.h"
 
 /**********		DEFINES		**********/
-#define EEPROM_IIC_ADDR			0xA0
+#define EEPROM_IIC_ADDR			0xA0				//Where byte 0 is the read write direction.
 #define EEPROM_HOST_CODE		0xF8
 #define EEPROM_SECURITY_ADDR	0xB0
 #define EEPROM_RDY				I2C_EXIT_CODE_TC
@@ -32,7 +32,15 @@ bool eeprom_present()
 
 int8_t eeprom_status()
 {
-	return i2c_write(I2C4, EEPROM_IIC_ADDR, 0x00000000, I2C_INTERNAL_ADDR_16_BIT, NULL, 0, true);
+	i2c_exit_code_t rtn = i2c_write(I2C4, EEPROM_IIC_ADDR, 0x00000000, I2C_INTERNAL_ADDR_16_BIT, NULL, 0, true);
+	uint8_t counter = 0;
+	while (rtn == I2C_EXIT_CODE_ERR)
+	{
+		i2c_write(I2C4, EEPROM_IIC_ADDR, 0x00000000, I2C_INTERNAL_ADDR_16_BIT, NULL, 0, true);
+		counter++;
+		if (counter > 3) { break; }
+	}
+	return rtn;
 }
 
 eeprom_sts_t eeprom_write(uint32_t addr, void* data, uint32_t num_bytes)
@@ -50,6 +58,13 @@ eeprom_sts_t eeprom_write(uint32_t addr, void* data, uint32_t num_bytes)
 
 	i2c_exit_code_t sts = i2c_write(I2C4, dev_addr, internal_addr, I2C_INTERNAL_ADDR_16_BIT, (uint8_t*)data, num_bytes, true);
 	eeprom_sts_t rtn;
+
+	/* If it times out, try it again. */
+	if (sts == I2C_EXIT_CODE_TIMEOUT)
+	{
+		sts = i2c_write(I2C4, dev_addr, internal_addr, I2C_INTERNAL_ADDR_16_BIT, (uint8_t*)data, num_bytes, true);
+	}
+
 	if (sts == I2C_EXIT_CODE_TC)
 	{
 		rtn = EEPROM_STS_OK;
@@ -75,8 +90,15 @@ eeprom_sts_t eeprom_read(void* data, uint32_t addr, uint32_t num_bytes)
 	i2c_exit_code_t sts;
 	while (num_transactions > 0)
 	{
+		void* data_save = data;		//Save the data pointer in case we have to retry due to a timeout.
 		uint32_t n = (num_transactions == 1) ? leftover_bytes : 255;
 		sts = i2c_read(I2C4, dev_addr, internal_addr, I2C_INTERNAL_ADDR_16_BIT, (uint8_t*)data, n, false);
+		/* If it times out, try it again. */
+		if (sts == I2C_EXIT_CODE_TIMEOUT)
+		{
+			data = data_save;
+			sts = i2c_read(I2C4, dev_addr, internal_addr, I2C_INTERNAL_ADDR_16_BIT, (uint8_t*)data, n, false);
+		}
 		if (sts != I2C_EXIT_CODE_TC)
 		{
 			break;
