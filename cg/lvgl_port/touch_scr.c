@@ -66,7 +66,7 @@ static void (*prv_scr_touched_cb)();
 
 /**********		STATIC FUNCTION DECLRATIONS		**********/
 static void prv_init();
-static int8_t prv_read_data();								//performs transaction with screen to get most recent touch data.
+static i2c_exit_code_t prv_read_data();								//performs transaction with screen to get most recent touch data.
 
 /*
  * prv_task_update:
@@ -92,18 +92,6 @@ static void prv_init()
 	/*Set the interrupt pin as input.*/
 	io_set_pin_dir_in(TOUCH_INT_PORT, TOUCH_INT_PIN);
 
-	/*Configure the IO pins.*/
-	io_set_output_type(I2C_SCL_PORT, I2C_SCL_PIN, IO_OUTPUT_TYPE_OPEN_DRAIN);
-	io_set_output_type(I2C_SDA_PORT, I2C_SDA_PIN, IO_OUTPUT_TYPE_OPEN_DRAIN);
-	io_set_pin_mux(I2C_SCL_PORT, I2C_SCL_PIN, I2C_SCL_ALT_FUNC);
-	io_set_pin_mux(I2C_SDA_PORT, I2C_SDA_PIN, I2C_SDA_ALT_FUNC);
-
-	/*Initialize the I2C.*/
-	i2c_init(I2C_INST);
-	i2c_set_clk_speed(I2C_INST, I2C_CLK_400K);
-	i2c_disable_analog_filt(I2C_INST);
-	i2c_enable_timeout_detection(I2C_INST);
-	i2c_enable(I2C_INST);
 
 	/*Put the screen in normal mode.*/
 	//const uint8_t work_mode_val = CST830_WORK_MODE_NORMAL;
@@ -113,7 +101,7 @@ static void prv_init()
 	i2c_write(I2C_INST, CST830_SLAVE_ADDR, CST820_DISAUTOSLEEP, I2C_INTERNAL_ADDR_8_BIT, &auto_sleep_val, 1, true);
 }
 
-static int8_t prv_read_data()
+static i2c_exit_code_t prv_read_data()
 {
 	touch_info_raw_t data;
 	int8_t status = i2c_read(I2C_INST, CST830_SLAVE_ADDR, CST830_TOUCH_NUM, I2C_INTERNAL_ADDR_8_BIT,
@@ -145,10 +133,12 @@ static void prv_task_update(touch_info_t* p_touch_data)
 	while (p_touch_data == NULL) {}
 	while (prv_run)
 	{
-		if (prv_read_data() != I2C_EXIT_CODE_TC)
+		i2c_exit_code_t res = prv_read_data();
+		if (res == I2C_EXIT_CODE_TIMEOUT)
 		{
 			i2c_bus_reset(I2C4);
 		}
+
 		*p_touch_data = touch_info;
 		if (touch_info.touch_num > 0)
 		{
