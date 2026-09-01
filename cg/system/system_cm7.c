@@ -22,10 +22,6 @@
 #define TEST_LED_PORT						GPIOB
 #define TEST_LED_PIN						GPIO_PIN15_Msk
 
-
-#define EVENT_BITS_BLINK_TASK_STOPPED		(EventBits_t)0x01	//Bit is set when blink is stopped, clear when task is created.
-
-
 /**********		GLOBAL VARIABLE DEFINITIONS		**********/
 
 /**********     STATIC VARIABLES     **********/
@@ -33,8 +29,6 @@ volatile UBaseType_t prv_system_stack_watermark;
 static TaskHandle_t prv_task_handle_blink = NULL;
 static uint32_t prv_blink_delay_on = 0;
 static uint32_t prv_blink_delay_off = 0;
-static bool prv_run_blink = false;
-static EventGroupHandle_t prv_event_group = NULL;
 static void (*prv_ui_init_cb)();		//Function pointer for the application to call to initialize the UI when system init task is done.
 
 /**********     STATIC FUNCTION DECLARATIONS     **********/
@@ -46,28 +40,19 @@ static void prv_lcd_bl_init();
 static void prv_task_blink(void* args)
 {
 	uint32_t delay_time_ms = (uint32_t)args;
-	/* Create the private event group if it hasnt been created yet. */
-	if (prv_event_group == NULL)
-	{
-		prv_event_group = xEventGroupCreate();
-	}
-	xEventGroupSetBits(prv_event_group, EVENT_BITS_BLINK_TASK_STOPPED);
 
 	TickType_t last_run_time;
 	last_run_time = xTaskGetTickCount();
 	prv_blink_delay_off = delay_time_ms;
 	prv_blink_delay_on = delay_time_ms;
 
-	xEventGroupClearBits(prv_event_group, EVENT_BITS_BLINK_TASK_STOPPED);
-	prv_run_blink = true;
-	while(prv_run_blink)
+	while(1)
 	{
 		io_test_led_on();
 		vTaskDelayUntil(&last_run_time, pdMS_TO_TICKS(prv_blink_delay_on));
 		io_test_led_off();
 		vTaskDelayUntil(&last_run_time, pdMS_TO_TICKS(prv_blink_delay_off));
 	}
-	xEventGroupSetBits(prv_event_group, EVENT_BITS_BLINK_TASK_STOPPED);
 	vTaskDelete(NULL);
 }
 
@@ -192,12 +177,11 @@ void system_blink_set_delay(uint32_t on_ms, uint32_t off_ms)
 	}
 }
 
-bool system_blink_stop(uint32_t block_time_ms)
+bool system_blink_stop()
 {
-	prv_run_blink = false;
-	uint32_t rtn = xEventGroupWaitBits(prv_event_group, EVENT_BITS_BLINK_TASK_STOPPED,
-										pdFALSE, pdTRUE, block_time_ms);
-	return rtn & EVENT_BITS_BLINK_TASK_STOPPED;
+	vTaskSuspend(prv_task_handle_blink);
+	io_test_led_off();
+	return true;
 }
 
 

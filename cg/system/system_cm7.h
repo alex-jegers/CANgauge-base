@@ -45,13 +45,11 @@ void system_blink_set_delay(uint32_t on_ms, uint32_t off_ms);
 /**
  * system_blink_stop:
  * desc:
- *      requests for the blink task to be deleted. will block the calling task for
- *      block_time_ms until the task is deleted.
+ *      turns the light off, suspends the blink task.
  * returns:
- *      true if the task is deleted/not running.   
- *      false if the task is still active.
+ *      true
  */
-bool system_blink_stop(uint32_t block_time_ms);
+bool system_blink_stop();
 /**
  * system_set_lcd_backlight:
  * params: 
