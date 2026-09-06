@@ -21,14 +21,6 @@ extern "C" {
  *      params:
  *      returns:
  */
-void error_handler_run();
-
-/**
- * error_handler_log_from_isr:
- * 		returns: higher_pri_task_woken to be passed into portYIELD_FROM_ISR().
- */
-BaseType_t error_handler_log_from_isr(char* log);
-
 void error_show_msgbox(char* msg);
 void error_show_msgbox_from_lvgl_task(char* msg);
 
