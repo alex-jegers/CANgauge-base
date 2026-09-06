@@ -266,3 +266,22 @@ char* sys_mem_csv_split(char* str, uint32_t index)
 	}
 	return split;
 }
+
+uint32_t sys_mem_csv_get_num_cols(char* str)
+{
+	uint32_t str_len = strlen(str);
+	char* str_copy = (char*)malloc(str_len);
+	strcpy(str_copy, str);
+	char* sv_ptr = NULL;
+	char* split = NULL;
+
+	uint8_t counter = 0;
+	split = strtok_r(str_copy, ",", &sv_ptr);
+	while (split != NULL)
+	{
+		counter++;
+		split = strtok_r(NULL, ",", &sv_ptr);
+	}
+	free(str_copy);
+	return counter;
+}

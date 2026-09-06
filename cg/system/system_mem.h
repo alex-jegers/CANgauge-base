@@ -84,6 +84,12 @@ FRESULT sys_mem_create_default_config_file();
  */
 char* sys_mem_csv_split(char* str, uint32_t index);
 
+/**
+ * sys_mem_csv_get_num_cols	TODO:find a better file to put this.
+ * 		desc:
+ */
+uint32_t sys_mem_csv_get_num_cols(char* str);
+
 
 
 
