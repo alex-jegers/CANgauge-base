@@ -32,6 +32,11 @@ extern "C" {
  */
 #include "drivers/drivers.h"
 
+/*
+ * Stuff to help handle errors (message boxes, etc.).
+ */
+#include "system/error_handler.h"
+
 /**********     TYPEDEFS         **********/
 
 /**********     DEFINES      **********/
