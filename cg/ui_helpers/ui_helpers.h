@@ -33,7 +33,7 @@ void ui_helpers_create_gauge_animation(lv_anim_t* anim, lv_obj_t* obj, lv_anim_e
 lv_obj_t* ui_helpers_add_text_to_act_scr(char* text, lv_align_t alignment, uint32_t x, uint32_t y);
 lv_obj_t* ui_helpers_show_msgbox(const char* text, const char* btn_text, lv_event_cb_t func);
 void ui_helpers_add_msgbox_close_btn(lv_obj_t* msgbox, void (*func)());
-lv_obj_t* ui_helpers_show_loading_wheel(const char* msg);
+lv_obj_t* ui_helpers_show_loading_wheel(lv_obj_t* parent, const char* msg);
 lv_obj_t* ui_helpers_load_number_pad();			//Returns the keyboard object.
 void ui_helpers_delete_number_pad();
 

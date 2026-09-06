@@ -242,9 +242,13 @@ void ui_helpers_add_msgbox_close_btn(lv_obj_t* msgbox, void (*func)())
 	lv_obj_set_style_bg_color(close_btn, UI_COLOR_RED, LV_STATE_DEFAULT);
 }
 
-lv_obj_t* ui_helpers_show_loading_wheel(const char* msg)
+lv_obj_t* ui_helpers_show_loading_wheel(lv_obj_t* parent, const char* msg)
 {
-	lv_obj_t* container = lv_obj_create(lv_screen_active());
+	if (parent == NULL)
+	{
+		parent = lv_screen_active();
+	}
+	lv_obj_t* container = lv_obj_create(parent);
 	lv_obj_set_size(container, 250, 250);
 	lv_obj_center(container);
 	lv_obj_set_scrollbar_mode(container, LV_SCROLLBAR_MODE_OFF);
