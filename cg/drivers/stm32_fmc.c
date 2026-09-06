@@ -26,7 +26,7 @@ void fmc_init_sdram()
 	/*Enable RCC AHB3 clock for the FMC.*/
 	RCC->AHB3ENR |= RCC_AHB3ENR_FMCEN;
 
-	/*Select and enable the kernel clock.*/
+	/*Select and enable the kernel clock. Select PLL 2R*/
 	RCC->D1CCIPR |= RCC_D1CCIPR_FMCSEL_PLL2R;
 	rcc_enable_pll_2r();
 

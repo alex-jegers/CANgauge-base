@@ -101,7 +101,7 @@ static int8_t prv_config_pll(uint32_t* rcc_pll, uint16_t mult, uint8_t div_p, ui
 		return 0;
 	}
 
-	*rcc_pll = mult - 1 
+	*rcc_pll = (mult - 1)
 			| ((div_p - 1) << RCC_PLL1DIVR_P1_Pos)
 			| ((div_q - 1) << RCC_PLL1DIVR_Q1_Pos)
 			| ((div_r - 1) << RCC_PLL1DIVR_R1_Pos);
@@ -124,7 +124,7 @@ void rcc_main_clock_config()
 
 	/*Initialize all 3 PLLs.*/
 	assert( rcc_config_pll_1(60, 1, 1, 2) );
-	assert( rcc_config_pll_2(29, 7, 1, 1) );
+	assert( rcc_config_pll_2(33, 7, 1, 1) );
 	assert( rcc_config_pll_3(27, 1, 18, 9) );
 
 	/*Enable PLL1P for the sys_clk.*/
