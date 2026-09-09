@@ -1,4 +1,6 @@
-
+/**
+ * @file: basic control of the memory containers on CANgauge.
+ */
 #ifndef _SYSTEM_MEM_H_
 #define _SYSTEM_MEM_H_
 

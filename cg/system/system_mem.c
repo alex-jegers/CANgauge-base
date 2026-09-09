@@ -13,6 +13,7 @@ SYS_MEM_REGION_EXTERN_RAM static uint8_t system_mem_ram_file_system[SECTOR_SIZE_
 
 /**********		STATIC FUNCTION DECLRATIONS		**********/
 SYS_MEM_REGION_RAM_EXE static void prv_memcpy(void* dest, void* src, size_t n_bytes);
+static FRESULT prv_create_eeprom_fs();
 /**********		STATIC FUNCTION DEFINITIONS		**********/
 SYS_MEM_REGION_RAM_EXE static void prv_memcpy(void* dest, void* src, size_t n_bytes)
 {
@@ -20,6 +21,24 @@ SYS_MEM_REGION_RAM_EXE static void prv_memcpy(void* dest, void* src, size_t n_by
 	{
 		*((uint8_t*)dest + i) = *((uint8_t*)src + i);
 	}
+}
+
+static FRESULT prv_create_eeprom_fs()
+{
+	FRESULT res;
+	const MKFS_PARM params_eeprom =
+	{
+			.fmt = FM_FAT,
+			.n_fat = 1,
+			.align = 0,
+			.n_root = 16,
+			.au_size = 0
+	};
+
+	SYS_MEM_REGION_EXTERN_RAM static uint8_t work_eeprom[4096];
+	memset(work_eeprom, 0, 4096);
+	res = f_mkfs("0:", &params_eeprom, &work_eeprom, 4096);
+	return res;
 }
 
 /**********		GLOBAL FUNCTION DEFINITIONS		**********/
@@ -34,14 +53,6 @@ void sys_mem_init_file_systems()
 			.n_fat = 1,
 			.align = 0,
 			.n_root = 0,
-			.au_size = 0
-	};
-	const MKFS_PARM params_eeprom =
-	{
-			.fmt = FM_FAT,
-			.n_fat = 1,
-			.align = 0,
-			.n_root = 16,
 			.au_size = 0
 	};
 
@@ -63,11 +74,7 @@ void sys_mem_init_file_systems()
 	res = f_getfree("0:", &free_clusters, &fs_ptr);
 	if (res != FR_OK)
 	{
-		/* Create a file system if there isnt one. */
-		SYS_MEM_REGION_EXTERN_RAM static uint8_t work_eeprom[4096];
-		memset(work_eeprom, 0, 4096);
-		res = f_mkfs("0:", &params_eeprom, &work_eeprom, 4096);
-		assert(res == FR_OK);
+		prv_create_eeprom_fs();
 	}
 	/* Check if the config file is already there. */
 	FIL temp;
@@ -75,7 +82,15 @@ void sys_mem_init_file_systems()
 	if (res != FR_OK)
 	{
 		res = sys_mem_create_default_config_file();
-		assert(res == FR_OK || res == FR_EXIST);
+		if (res != FR_OK)
+		{
+			prv_create_eeprom_fs();
+			res = sys_mem_create_default_config_file();
+			if (res != FR_OK)
+			{
+				//TODO: Handle error.
+			}
+		}
 	}
 	f_close(&temp);
 
@@ -236,7 +251,7 @@ FRESULT sys_mem_create_default_config_file()
 {
 	FIL config_file;
 	FRESULT res;
-	f_unlink(SYS_MEM_CONFIG_FILE_PATH);		//Unlink the old one incase it's still there.
+	res = f_unlink(SYS_MEM_CONFIG_FILE_PATH);		//Unlink the old one incase it's still there.
 	res = f_open(&config_file, SYS_MEM_CONFIG_FILE_PATH, FA_CREATE_ALWAYS | FA_WRITE);
 	if (res != FR_OK) { return res; }
 
