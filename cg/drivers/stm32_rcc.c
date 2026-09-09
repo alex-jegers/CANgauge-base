@@ -124,7 +124,7 @@ void rcc_main_clock_config()
 
 	/*Initialize all 3 PLLs.*/
 	assert( rcc_config_pll_1(60, 1, 1, 2) );
-	assert( rcc_config_pll_2(33, 7, 1, 1) );
+	assert( rcc_config_pll_2(29, 7, 1, 1) );
 	assert( rcc_config_pll_3(27, 1, 18, 9) );
 
 	/*Enable PLL1P for the sys_clk.*/
