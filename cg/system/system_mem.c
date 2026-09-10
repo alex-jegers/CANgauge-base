@@ -10,10 +10,11 @@
 
 /**********		STATIC VARIABLES		**********/
 SYS_MEM_REGION_EXTERN_RAM static uint8_t system_mem_ram_file_system[SECTOR_SIZE_RAM * NUM_SECTORS_RAM];
-
+static FATFS* prv_fs_ram;
+static FATFS* prv_fs_eeprom;           // Filesystem object
 /**********		STATIC FUNCTION DECLRATIONS		**********/
 SYS_MEM_REGION_RAM_EXE static void prv_memcpy(void* dest, void* src, size_t n_bytes);
-static FRESULT prv_create_eeprom_fs();
+
 /**********		STATIC FUNCTION DEFINITIONS		**********/
 SYS_MEM_REGION_RAM_EXE static void prv_memcpy(void* dest, void* src, size_t n_bytes)
 {
@@ -23,8 +24,13 @@ SYS_MEM_REGION_RAM_EXE static void prv_memcpy(void* dest, void* src, size_t n_by
 	}
 }
 
-static FRESULT prv_create_eeprom_fs()
+/**********		GLOBAL FUNCTION DEFINITIONS		**********/
+FRESULT sys_mem_create_eeprom_fs()
 {
+	if (prv_fs_eeprom != NULL)
+	{
+		return -1;
+	}
 	FRESULT res;
 	const MKFS_PARM params_eeprom =
 	{
@@ -38,14 +44,18 @@ static FRESULT prv_create_eeprom_fs()
 	SYS_MEM_REGION_EXTERN_RAM static uint8_t work_eeprom[4096];
 	memset(work_eeprom, 0, 4096);
 	res = f_mkfs("0:", &params_eeprom, &work_eeprom, 4096);
+	prv_fs_eeprom = (FATFS*)malloc(sizeof( FATFS ));
+	if (prv_fs_eeprom == NULL)
+	{
+		return -1;
+	}
+	res = f_mount(prv_fs_eeprom, "0:", 1);
+	f_setlabel("CANgauge");
 	return res;
 }
 
-/**********		GLOBAL FUNCTION DEFINITIONS		**********/
-void sys_mem_init_file_systems()
+FRESULT sys_mem_create_ram_fs(uint32_t size_bytes)
 {
-	/* Create the file system. */
-	static FATFS fs_ram, fs_eeprom;           // Filesystem object
 	FRESULT res;        // API result code
 	const MKFS_PARM params =
 	{
@@ -60,42 +70,47 @@ void sys_mem_init_file_systems()
 	SYS_MEM_REGION_EXTERN_RAM static uint8_t work_ram[4096];
 	memset(work_ram, 0, 4096);
 	res = f_mkfs("1:", &params, &work_ram, 4096);
-	res = f_mount(&fs_ram, "1:", 0);
-
-	/* Create a directory called firmware in the RAM FS. */
-	res = f_mkdir("1:/Firmware");
-
-
-	/* Setup the EEPROM File System. */
-	/* Check if there's already a file system in EEPROM. */
-	res = f_mount(&fs_eeprom, "0:", 0);
-	FATFS* fs_ptr;
-	uint32_t free_clusters;
-	res = f_getfree("0:", &free_clusters, &fs_ptr);
-	if (res != FR_OK)
-	{
-		prv_create_eeprom_fs();
-	}
-	/* Check if the config file is already there. */
-	FIL temp;
-	res = f_open(&temp, SYS_MEM_CONFIG_FILE_PATH, FA_READ);
-	if (res != FR_OK)
-	{
-		res = sys_mem_create_default_config_file();
-		if (res != FR_OK)
-		{
-			prv_create_eeprom_fs();
-			res = sys_mem_create_default_config_file();
-			if (res != FR_OK)
-			{
-				//TODO: Handle error.
-			}
-		}
-	}
-	f_close(&temp);
-
-	f_setlabel("CANgauge");
+	res = f_mount(prv_fs_ram, "1:", 1);
 	f_setlabel("1:CANgauge");
+	return res;
+}
+
+FRESULT sys_mem_init_ram_fs()
+{
+	if (prv_fs_ram == NULL)
+	{
+		prv_fs_ram = (FATFS*)malloc(sizeof( FATFS ));
+	}
+	FRESULT res = f_mount(prv_fs_ram, "1:", 1);
+	if (res == FR_OK)
+	{
+		f_setlabel("1:CANgauge");
+		return res;
+	}
+	else
+	{
+		free(prv_fs_ram);
+		return res;
+	}
+}
+
+FRESULT sys_mem_init_eeprom_fs()
+{
+	if (prv_fs_eeprom == NULL)
+	{
+		prv_fs_eeprom = (FATFS*)malloc(sizeof( FATFS ));
+	}
+	FRESULT res = f_mount(prv_fs_eeprom, "0:", 1);
+	if (res == FR_OK)
+	{
+		f_setlabel("CANgauge");
+		return res;
+	}
+	else
+	{
+		free(prv_fs_eeprom);
+		return res;
+	}
 }
 
 SYS_MEM_REGION_RAM_EXE void sys_mem_flash_write_sector(uint8_t sector, void* src)

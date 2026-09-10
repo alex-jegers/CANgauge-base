@@ -35,12 +35,34 @@ extern "C" {
 
 /**********		GLOBAL FUNCTION DECLRATIONS		**********/
 /**
- * sys_mem_init_file_systems
- * 		desc: initializes a filesystem in RAM and EEPROM. RAM
- * 			is used for firmware updates, EEPROM is used for data logging
- * 			and a general save system.
+ * sys_mem_create_eeprom_fs
+ * 		desc: initializes a blank filesystem in EEPROM.
+ * 		returns: FR_OK on success, something else on failure.
  */
-void sys_mem_init_file_systems();
+FRESULT sys_mem_create_eeprom_fs();
+
+/**
+ * sys_mem_create_ram_fs
+ * 		desc: initializes a blank filesystem in external RAM.
+ * 		returns: true on success, false on failure.
+ */
+FRESULT sys_mem_create_ram_fs();
+
+/**
+ * sys_mem_get_eeprom_fs
+ * 		desc: tries to mount the EEPROM file system. Can be used to check validity of the
+ * 			file system.
+ * 		returns: FR_OK if the file system exists and init succeeded.
+ */
+FRESULT sys_mem_init_eeprom_fs();
+
+/**
+ * sys_mem_get_ram_fs
+ * 		desc: tries to mount the RAM file system. Can be used to check validity of the
+ * 			file system.
+ * 		returns: FR_OK if the file system exists and init succeeded.
+ */
+FRESULT sys_mem_init_ram_fs();
 
 /**
  * sys_mem_get_ram_fs_ptr:
