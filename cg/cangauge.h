@@ -37,6 +37,11 @@ extern "C" {
  */
 #include "system/error_handler.h"
 
+/*
+ * Control the USB connection.
+ */
+#include "system/usb_task.h"
+
 /**********     TYPEDEFS         **********/
 
 /**********     DEFINES      **********/
