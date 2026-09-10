@@ -85,9 +85,6 @@ void system_task_init()
 	/* Reset the I2C bus. */
 	i2c_bus_reset(I2C4);
 
-	/* Initialize the file systems. This has to come after I2C init bc EEPROM uses I2C. */
-	sys_mem_init_file_systems();
-
 	/* This has to come after the file system because we save the screen brightness in the config file. */
 	prv_lcd_bl_init();
 
