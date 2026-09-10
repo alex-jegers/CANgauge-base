@@ -8,6 +8,7 @@ extern "C" {
 
 /**********     INCLUDES        **********/
 #include "system/system_cm7.h"
+#include <stdbool.h>
 
 /**********     TYPEDEFS         **********/
 typedef enum
@@ -30,8 +31,9 @@ void usb_disconnect();
 /**
  * usb_connect:
  * 		desc: starts both USB tasks, links the file_sys indicated to the MSC device.
+ * 		returns: true on success, false on error.
  */
-void usb_connect(usb_fs_t file_sys);
+bool usb_connect(usb_fs_t file_sys);
 
 /**
  * usb_watchdog_task

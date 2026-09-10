@@ -112,12 +112,28 @@ void usb_disconnect()
 	rcc_reset_usb2otg();
 }
 
-void usb_connect(usb_fs_t file_sys)
+bool usb_connect(usb_fs_t file_sys)
 {
 	usb_disconnect();		//Make sure were not currently connected with another file system.
 
 	prv_file_sys = file_sys;
 
+	/* Check if the file systems exist or not. */
+	FRESULT res;
+	if (file_sys == USB_FS_EEPROM)
+	{
+		res = sys_mem_init_eeprom_fs();
+	}
+	else if (file_sys == USB_FS_RAM)
+	{
+		res = sys_mem_init_ram_fs();
+	}
+	if (res != FR_OK)
+	{
+		return false;
+	}
+
+	/* Save the block sizes and memory addresses and such. */
 	if (file_sys == USB_FS_RAM)
 	{
 		prv_num_blocks = NUM_SECTORS_RAM;
@@ -133,6 +149,7 @@ void usb_connect(usb_fs_t file_sys)
 		 */
 		file_sys_start_ptr = 0;
 	}
+
 	/* Sets the interrupt handlers. */
 	usb_msc_set_read_cb(prv_msc_read_handler);
 	usb_msc_set_write_cb(prv_msc_write_handler);
@@ -147,6 +164,8 @@ void usb_connect(usb_fs_t file_sys)
 	/* Start the tasks. */
 	usb_watchdog_run();
 	usb_msc_task_run();
+
+	return true;
 }
 
 void usb_watchdog_run()
