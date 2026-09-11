@@ -58,24 +58,11 @@ static void prv_task_blink(void* args)
 
 static void prv_lcd_bl_init()
 {
-	//io_set_pin_dir_out(GPIOB, GPIO_PIN14_Msk);
-	//io_pin_out_set(GPIOB, GPIO_PIN14_Msk);
-	//TODO: Double check this PWM code.
-	/* Read the backlight value from the config file. */
-	char backlight_str[17];
-	sys_mem_get_config_data("BRIGHTNESS", backlight_str);
-
-	char* sv_ptr;
-	char* split[2];
-	split[0] = strtok_r(backlight_str, ",", &sv_ptr);
-	split[1] = strtok_r(NULL, ",", &sv_ptr);
-	uint32_t backlight_int = atoi(split[1]);
-
 	io_set_pin_mux(GPIOB, GPIO_PIN14_Msk, GPIO_AFR_AF2);
 	timer_init(TIM12);
 	timer_enable_pwm_output(TIM12, 1);
 	timer_set_pwm_freq(TIM12, 100);
-	timer_set_pwm_duty_cycle(TIM12, backlight_int, 1);
+	timer_set_pwm_duty_cycle(TIM12, 0xFFFF, 1);
 	timer_enable(TIM12);
 }
 

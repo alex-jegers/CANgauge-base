@@ -29,7 +29,7 @@ extern "C" {
 #define BLOCK_SIZE_EEPROM		1
 #define NUM_SECTORS_EEPROM		0x1FFFF / SECTOR_SIZE_EEPROM
 
-#define SYS_MEM_CONFIG_FILE_PATH		"0:/System Data.txt"        //TODO: move to application code.
+#define FILE_MNGR_CONFIG_FILE_PATH		"0:/System Data.txt"        //TODO: move to application code.
 
 /**********     GLOBAL VARIABLE DECLRATIONS     **********/
 
@@ -82,37 +82,6 @@ uint8_t* sys_mem_get_ram_fs_ptr();
  */
 void sys_mem_flash_write_sector(uint8_t sector, void* src);
 
-/**
- * sys_mem_get_config_data:
- * 		desc: gets a line of data from the config file.
- * 		params:
- * 			data_to_get: a pointer to a string of the header of the data wanted (i.e. "LAST GAUGES STATE").
- * 			data_buf: a buffer where the line will be written to.
- * 		returns: the number of bytes written to data_buf.
- */
-uint32_t sys_mem_get_config_data(const char* data_to_get, char* data_buf);
-
-/**
- * sys_mem_set_config_data:
- * 		desc: overwrites new data to the config file.
- * 		params:
- * 			data: the line of data to write (i.e. "LAST GAUGES STATE,0,0,0,0).
- */
-void sys_mem_set_config_data(char* data);
-
-FRESULT sys_mem_create_default_config_file();
-
-/**
- * sys_mem_csv_split	TODO:find a better file to put this.
- * 		desc: returns an element (index) from a string of comma separated values.
- */
-char* sys_mem_csv_split(char* str, uint32_t index);
-
-/**
- * sys_mem_csv_get_num_cols	TODO:find a better file to put this.
- * 		desc:
- */
-uint32_t sys_mem_csv_get_num_cols(char* str);
 
 
 
