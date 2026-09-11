@@ -31,7 +31,7 @@ DSTATUS disk_status (
 	BYTE pdrv		/* Physical drive nmuber to identify the drive */
 )
 {
-	DSTATUS stat;
+	DSTATUS stat = RES_NOTRDY;
 	int result;
 
 	switch (pdrv)
@@ -105,7 +105,7 @@ DRESULT disk_read (
 	UINT count		/* Number of sectors to read */
 )
 {
-	DRESULT res;
+	DRESULT res = RES_ERROR;
 
 	switch (pdrv)
 	{
@@ -152,7 +152,6 @@ DRESULT disk_write (
 )
 {
 	DRESULT res;
-	int result;
 
 	switch (pdrv)
 	{
@@ -162,7 +161,7 @@ DRESULT disk_write (
 
 		for (uint32_t i = 0; i < num_eeprom_blocks; i++)
 		{
-			assert( eeprom_write(phy_addr + (i * 128), buff + (i * 128), 128) == EEPROM_STS_OK );
+			assert( eeprom_write(phy_addr + (i * 128), (void*)(buff + (i * 128)), 128) == EEPROM_STS_OK );
 			while (eeprom_status() != I2C_EXIT_CODE_TC) {}
 		}
 		res = RES_OK;
