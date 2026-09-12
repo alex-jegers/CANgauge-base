@@ -44,14 +44,14 @@ _Min_Stack_Size = 0x400; /* required amount of stack */
 /* Memories definition */
 MEMORY
 {
-  RAM_D1 (rw)   	: ORIGIN = 0x24000000, LENGTH =  512K	/*Frame buffer.*/
-  FLASH  (rx)    	: ORIGIN = 0x08000000, LENGTH = 1024K   /* Memory is divided. Actual start is 0x08000000 and actual length is 2048K */
+  RAM_D1 (rw)   	: ORIGIN = 0x24000000, LENGTH =  512K	/* One LCD frame buffer. */
+  FLASH  (rx)    	: ORIGIN = 0x08000000, LENGTH = 1024K   /* Program memory. */
   FLASH2 (rx)    	: ORIGIN = 0x08100000, LENGTH = 1024K
-  DTCMRAM (rw)  	: ORIGIN = 0x20000000, LENGTH = 128K		/*Stack.*/
-  RAM_D2 (rw)   	: ORIGIN = 0x30000000, LENGTH = 288K		/*CM7 heap and data.*/
-  RAM_D3 (rw)   	: ORIGIN = 0x38000000, LENGTH = 64K		/*CM4 heap and data.*/
-  ITCMRAM (rx)  	: ORIGIN = 0x000000ff, LENGTH = 64K		/*Bootloader functions*/
-  EXT_RAM (rw) 	: ORIGIN = 0x70000000, LENGTH = 16M
+  DTCMRAM (rw)  	: ORIGIN = 0x20000000, LENGTH = 128K	/* Stack. */
+  RAM_D2 (rw)   	: ORIGIN = 0x30000000, LENGTH = 288K	/* Data section (LVGL and FreeRTOS heap). */
+  RAM_D3 (rw)   	: ORIGIN = 0x38000000, LENGTH = 64K		
+  ITCMRAM (rx)  	: ORIGIN = 0x000000ff, LENGTH = 64K		/* Instruction tightly coupled RAM memory. */
+  EXT_RAM (rw) 		: ORIGIN = 0x70000000, LENGTH = 16M		/* 2nd frame buffer and user heap. */
 
 }
 /* Sections */
