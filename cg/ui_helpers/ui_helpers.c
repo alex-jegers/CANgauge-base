@@ -7,14 +7,14 @@
 static bool ui_demo_mode = false;
 /**********		STATIC VARIABLES		**********/
 static lv_obj_t* prv_number_pad = NULL;
-static const char* prv_number_pad_map[] = { "1", "2", "3", "\n",
+static const char* prv_number_pad_map[] = { "-","1", "2", "3", "\n",
 											" ","4", "5", "6", " ", "\n",
-											" ", "7", "8", "9", " ", "\n",
-											" ", LV_SYMBOL_OK, "0", LV_SYMBOL_BACKSPACE, " ", NULL};
-static const lv_buttonmatrix_ctrl_t prv_number_pad_ctrl[] = { LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8,
+											" ", "7", "8", "9", "0", " ", "\n",
+											" ", LV_SYMBOL_OK, ".", LV_SYMBOL_BACKSPACE, " ", NULL};
+static const lv_buttonmatrix_ctrl_t prv_number_pad_ctrl[] = { LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8,
 															PRV_HIDDEN_KEY(LV_BUTTONMATRIX_CTRL_WIDTH_1), LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8, PRV_HIDDEN_KEY(LV_BUTTONMATRIX_CTRL_WIDTH_1),
-															PRV_HIDDEN_KEY(LV_BUTTONMATRIX_CTRL_WIDTH_3), LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8, PRV_HIDDEN_KEY(LV_BUTTONMATRIX_CTRL_WIDTH_3),
-															PRV_HIDDEN_KEY(LV_BUTTONMATRIX_CTRL_WIDTH_6), LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8, PRV_HIDDEN_KEY(LV_BUTTONMATRIX_CTRL_WIDTH_6)};
+															PRV_HIDDEN_KEY(LV_BUTTONMATRIX_CTRL_WIDTH_4), LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_8, PRV_HIDDEN_KEY(LV_BUTTONMATRIX_CTRL_WIDTH_4),
+															PRV_HIDDEN_KEY(LV_BUTTONMATRIX_CTRL_WIDTH_6), LV_BUTTONMATRIX_CTRL_WIDTH_9, LV_BUTTONMATRIX_CTRL_WIDTH_8, LV_BUTTONMATRIX_CTRL_WIDTH_9, PRV_HIDDEN_KEY(LV_BUTTONMATRIX_CTRL_WIDTH_6)};
 
 /**********		STATIC FUNCTION DECLRATIONS		**********/
 static void ui_helpers_msgbox_close(lv_event_t* e);
@@ -287,7 +287,7 @@ lv_obj_t* ui_helpers_load_number_pad()
 	}
 	else
 	{
-		return NULL;
+		return prv_number_pad;
 	}
 }
 
