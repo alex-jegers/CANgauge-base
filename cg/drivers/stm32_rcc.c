@@ -264,7 +264,7 @@ void rcc_set_sys_ck(rcc_sys_ck_t ck_src)
 
 }
 
-SYS_MEM_REGION_RAM_EXE void rcc_sw_reset()
+void rcc_sw_reset()
 {
 	//NVIC_SystemReset();
 	  __DSB();                                                          /* Ensure all outstanding memory accesses included
