@@ -53,13 +53,17 @@ lv_obj_t* ui_helpers_create_btn_with_text(lv_obj_t* parent, const char* text, co
 	temp_btn = lv_button_create(parent);
 	temp_lbl = lv_label_create(temp_btn);
 	lv_label_set_text(temp_lbl, text);
+	lv_obj_set_style_text_color(temp_lbl, UI_COLOR_WHITE, 0);
+	lv_obj_set_style_border_color(temp_btn, UI_COLOR_WHITE, 0);
+	lv_obj_set_style_border_width(temp_btn, 2, 0);
 	lv_obj_align(temp_lbl, LV_ALIGN_CENTER, 0, 0);
 	lv_obj_set_style_text_font(temp_lbl, font, LV_STATE_DEFAULT);
-	lv_obj_set_style_bg_color(temp_btn, UI_COLOR_RED, LV_STATE_DEFAULT);
+	lv_obj_set_style_bg_color(temp_btn, UI_COLOR_BLACK, LV_STATE_DEFAULT);
 	lv_obj_set_style_bg_color(temp_btn, UI_COLOR_GRAY, LV_STATE_PRESSED | LV_STATE_CHECKED | LV_STATE_FOCUSED);
 	lv_obj_set_style_shadow_width(temp_btn, 0, LV_STATE_DEFAULT);
-	lv_obj_set_style_pad_left(temp_btn, 12, LV_STATE_DEFAULT);
-	lv_obj_set_style_pad_right(temp_btn, 12, LV_STATE_DEFAULT);
+	lv_obj_set_style_radius(temp_btn, LV_RADIUS_CIRCLE, 0);
+	lv_obj_set_style_pad_left(temp_btn, 18, LV_STATE_DEFAULT);
+	lv_obj_set_style_pad_right(temp_btn, 18, LV_STATE_DEFAULT);
 	lv_obj_set_style_pad_top(temp_btn, 16, LV_STATE_DEFAULT);
 	lv_obj_set_style_pad_bottom(temp_btn, 16, LV_STATE_DEFAULT);
 
