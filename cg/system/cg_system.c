@@ -7,8 +7,7 @@
 
 
 /**********		INCLUDES		**********/
-#include "system_cm7.h"
-
+#include <system/cg_system.h>
 #include "drivers/drivers.h"
 #include "lvgl_port/lvgl_port_def.h"
 #include "ui_helpers/ui_helpers.h"

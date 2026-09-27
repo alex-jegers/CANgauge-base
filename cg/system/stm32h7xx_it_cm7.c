@@ -21,7 +21,7 @@
 #ifdef CORE_CM7
 
 #include "stm32h7xx_it_cm7.h"
-#include "system/system_cm7.h"
+#include <system/cg_system.h>
 #include "system/error_handler.h"
 
 
@@ -46,7 +46,6 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-    uint32_t pc;
     rcc_sw_reset();
 }
 
