@@ -62,6 +62,8 @@ lv_obj_t* ui_helpers_create_btn_with_text(lv_obj_t* parent, const char* text, co
 	lv_obj_set_style_bg_color(temp_btn, UI_COLOR_GRAY, LV_STATE_PRESSED | LV_STATE_CHECKED | LV_STATE_FOCUSED);
 	lv_obj_set_style_shadow_width(temp_btn, 0, LV_STATE_DEFAULT);
 	lv_obj_set_style_radius(temp_btn, LV_RADIUS_CIRCLE, 0);
+	lv_obj_set_style_border_width(temp_btn, 2, 0);
+	lv_obj_set_style_border_color(temp_btn, UI_COLOR_DARK_GRAY, 0);
 	lv_obj_set_style_pad_left(temp_btn, 18, LV_STATE_DEFAULT);
 	lv_obj_set_style_pad_right(temp_btn, 18, LV_STATE_DEFAULT);
 	lv_obj_set_style_pad_top(temp_btn, 16, LV_STATE_DEFAULT);
