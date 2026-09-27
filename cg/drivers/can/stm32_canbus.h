@@ -21,11 +21,10 @@
 
 /***********	GLOBAL FUNCTION DECLARATIONS	************/
 /**
- * can_init:
- * desc: sets up the IO pins. Sets up the filter to store non-matching standard and extended
- * 		frames in FIFO0. Configures the address pointers to the standard and extended filter
- * 		lists based on CAN1_xxx_ID_FILTER_ADDR macro. Configures the buffer address pointers
- * 		to the RX and TX FIFOs. Clears interrupts.
+ * @brief Sets up the IO pins. Sets up the filter to store non-matching standard and extended
+ * frames in FIFO0. Configures the address pointers to the standard and extended filter
+ * lists based on CAN1_xxx_ID_FILTER_ADDR macro. Configures the buffer address pointers
+ * to the RX and TX FIFOs. Clears interrupts.
  */
 void can_init(FDCAN_GlobalTypeDef* canbus);			
 

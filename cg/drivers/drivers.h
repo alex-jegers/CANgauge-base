@@ -8,7 +8,7 @@ extern "C" {
 
 /**********     INCLUDES        **********/
 #include "stm32_adc.h"
-#include "stm32_canbus.h"
+#include "can/stm32_canbus.h"
 #include "stm32_dma.h"
 #include "stm32_dma2d.h"
 #include "stm32_exti.h"
