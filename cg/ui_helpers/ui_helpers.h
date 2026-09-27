@@ -9,6 +9,20 @@ extern "C" {
 /**********     INCLUDES        **********/
 #include "lvgl.h"
 /**********     DEFINES      **********/
+#define UI_COLOR_LIGHT_MODE 1
+
+#if UI_COLOR_LIGHT_MODE
+#define UI_COLOR_RED		lv_color_hex(0x000000)
+#define UI_COLOR_LIGHT_RED	lv_color_hex(0xdbc1c1)
+#define UI_COLOR_DARK_RED	lv_color_hex(0x4a0404)
+#define UI_COLOR_WHITE		lv_color_hex(0x000000)
+#define UI_COLOR_BLACK		lv_color_hex(0xfafafa)
+#define UI_COLOR_BLUE		lv_color_hex(0x0c65b3)
+#define UI_COLOR_TRUE_BLACK	lv_color_hex(0x000000)
+#define UI_COLOR_GRAY		lv_color_hex(0x3b3b3b)
+#define UI_COLOR_DARK_GRAY	lv_color_hex(0x262626)
+#else
+
 #define UI_COLOR_RED		lv_color_hex(0xdb1616)
 #define UI_COLOR_LIGHT_RED	lv_color_hex(0xdbc1c1)
 #define UI_COLOR_DARK_RED	lv_color_hex(0x4a0404)
@@ -18,6 +32,8 @@ extern "C" {
 #define UI_COLOR_TRUE_BLACK	lv_color_hex(0x000000)
 #define UI_COLOR_GRAY		lv_color_hex(0x3b3b3b)
 #define UI_COLOR_DARK_GRAY	lv_color_hex(0x262626)
+
+#endif
 
 #define UI_BTN_FONT			&lv_font_montserrat_20
 
