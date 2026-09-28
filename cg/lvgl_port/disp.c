@@ -1,6 +1,7 @@
 /**********     INCLUDES        **********/
 #include "disp.h"
 #include "system/system_mem.h"
+#include "system/cg_system.h"
 #include "drivers/drivers.h"
 #include "lvgl.h"
 
@@ -24,6 +25,9 @@ static void lcd_lvgl_disp_flush(lv_display_t* display, const lv_area_t* area, ui
 	uint32_t addr = (uint32_t)lv_display_get_buf_active(display)->data;
 	if (is_last == 1) {
 		LTDC->ICR = LTDC_ICR_CRRIF;
+#ifndef SYS_ENABLE_CACHE
+	#error "SYS_ENABLE_CACHE not defined, please include cg_system.h or define SYS_ENABLE_CACHE."
+#endif
 #if SYS_ENABLE_CACHE == 1
 		SCB_CleanDCache();
 #endif
