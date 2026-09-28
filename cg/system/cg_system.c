@@ -206,7 +206,7 @@ void system_set_can_transc(bool on)
 	}
 }
 
-void system_set_ui_init_cb(void (*func)())
+void system_set_application_init_cb(void (*func)())
 {
 	prv_ui_init_cb = func;
 }
