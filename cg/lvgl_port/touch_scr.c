@@ -2,6 +2,10 @@
 
 /**********     INCLUDES        **********/
 #include "touch_scr.h"
+#include "drivers/drivers.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "event_groups.h"
 
 /**********		DEFINES		**********/
 

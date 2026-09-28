@@ -7,7 +7,6 @@ extern "C" {
 #endif
 
 /**********     INCLUDES        **********/
-#include <system/cg_system.h>
 #include <stdbool.h>
 
 /**********     TYPEDEFS         **********/

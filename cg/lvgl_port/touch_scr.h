@@ -9,8 +9,9 @@ extern "C" {
 #endif
 
 /**********     INCLUDES        **********/
-#include "cangauge.h"
 #include "lvgl_port_def.h"
+#include <stdint.h>
+#include <stdbool.h>
 
 /**********     DEFINES      **********/
 
@@ -20,35 +21,26 @@ extern "C" {
 
 /**********		GLOBAL FUNCTION DECLRATIONS		**********/
 /*
- * touch_scr_run:
- *
- * desc: takes a pointer to a touch_info_t struct where it writes touch data to
+ * @brief Takes a pointer to a touch_info_t struct where it writes touch data to
  * every so often as specified by CST830_REFRESH_RATE.
  * */
 void touch_scr_run(touch_info_t* p_touch_data);
 
 /**
- * touch_scr_stop:
- * desc:
- *      requests for the touch screen task to be deleted. will block the calling task for
- *      block_time_ms until the task is deleted.
- * returns:
- *      true if the task is deleted/not running.   
- *      false if the task is still active.
+ * @brief Requests for the touch screen task to be deleted. will block the calling task for
+ * block_time_ms until the task is deleted.
+ *
+ * @returns true if the task is deleted/not running. False if the task is still active.
  */
 bool touch_scr_stop(uint32_t block_time_ms);
 
 /**
- * touch_scr_set_touched_cb:
- * desc:
- *      adds a function callback that will be called when the screen is touched.
+ * @brief Adds a function callback that will be called when the screen is touched.
  */
 void touch_scr_set_touched_cb(void (*func)());
 
 /**
- * touch_scr_clear_touched_cb:
- * desc:
- *      removes the function callback that is called when the screen is touched.
+ * @brief Removes the function callback that is called when the screen is touched.
  */
 void touch_scr_clear_touched_cb(void (*func)());
 

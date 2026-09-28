@@ -4,6 +4,11 @@
 #include "drivers/usb/stm32_usb_msc.h"
 #include "file_system/eeprom.h"
 
+#include "FreeRTOS.h"
+#include "task.h"
+
+#include <stdlib.h>
+
 /**********     TYPEDEFS         **********/
 
 /**********		DEFINES		**********/

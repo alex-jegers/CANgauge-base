@@ -1,7 +1,8 @@
 /**********     INCLUDES        **********/
 #include "disp.h"
-
-#include "cangauge.h"
+#include "system/system_mem.h"
+#include "drivers/drivers.h"
+#include "lvgl.h"
 
 /**********		DEFINES		**********/
 
@@ -52,8 +53,6 @@ void disp_init()
 
 	/*Set the display flush callback.*/
 	lv_display_set_flush_cb(disp, lcd_lvgl_disp_flush);
-
-
 }
 
 

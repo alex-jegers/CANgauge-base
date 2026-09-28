@@ -19,34 +19,25 @@ extern "C" {
 
 /**********		GLOBAL FUNCTION DECLRATIONS		**********/
 /**
- * lv_port_run():
- * 
- * desc: initializes LVGL, creates the LVGL mutex, and a FreeRTOS 
+ * @brief initializes LVGL, creates the LVGL mutex, and a FreeRTOS
  * task to run the LVGL task handler function.
  */
 void lv_port_run();
 
 /**
- * lv_port_take_lvgl_mutex:
- * 
- * desc: attempts to take the LVGL mutex (must be called before using
+ * @brief attempts to take the LVGL mutex (must be called before using
  * any LVGL related function).
  * 
- * params:
- * block_time_ms: the amount of time in milliseconds for the task to 
+ * @param block_time_ms the amount of time in milliseconds for the task to
  * block while waiting for the mutex.
  * 
- * return: 
- * true: the mutex was successfully taken.
+ * @returns true: the mutex was successfully taken.
  * false: the mutex could not be obtained
  */
 bool lv_port_take_lvgl_mutex(uint32_t block_time_ms);
 
 /**
- * lv_port_give_lvgl_mutex:
- * 
- * desc: give the LVGL mutex, must be called upon return from any
- * LVGL related function.
+ * @brief give the LVGL mutex, must be called upon return from any LVGL related function.
  */
 void lv_port_give_lvgl_mutex();
 

@@ -2,10 +2,6 @@
 
 /**********     INCLUDES        **********/
 #include "indev.h"
-
-#include "FreeRTOS.h"
-#include "task.h"
-
 #include "lvgl.h"
 
 /**********		DEFINES		**********/

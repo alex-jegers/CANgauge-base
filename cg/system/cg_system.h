@@ -1,8 +1,8 @@
 /*
- * system.h
- *
- *  Created on: May 31, 2024
- *      Author: awjpp
+ * @file cg_system.h
+ * @brief High level access to hardware specific features. Things like the on board LED,
+ * the LCD backlight, the CAN transceivers enable pins, initializing the FPU and
+ * cache are handled here. The cache can be enabled or disabled with a macro.
  */
 
 
@@ -12,26 +12,11 @@
 
 
 /**********		INCLUDES		**********/
-#include "stm32h745xx.h"
+#include <stdint.h>
 #include <stdbool.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
-#include "semphr.h"
-#include "event_groups.h"
-#include "timers.h"
-
-#include "system_mem.h"
-
-#include "version.h"
 
 /**********		DEFINES		**********/
 #define SYS_ENABLE_CACHE		1
-
 
 /**********     GLOBAL VARIABLE DECLRATIONS     **********/
 

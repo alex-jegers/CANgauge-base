@@ -7,7 +7,8 @@ extern "C" {
 #endif
 
 /**********     INCLUDES        **********/
-#include <system/cg_system.h>
+#include "FreeRTOS.h"
+#include "task.h"
 #include "drivers/drivers.h"
 
 /**********     DEFINES      **********/

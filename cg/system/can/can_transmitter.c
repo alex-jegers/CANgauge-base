@@ -2,6 +2,9 @@
 #include "can_transmitter.h"
 #include "drivers/drivers.h"
 
+#include "event_groups.h"
+#include "semphr.h"
+
 
 /**********		DEFINES		**********/
 #define EVENT_BITS_TASK_STOPPED     0x1 << 0
@@ -160,7 +163,7 @@ bool can_transmit_stop(uint32_t block_time_ms)
                                         pdTRUE,         //wait for all the bits (it's only 1)
                                         block_time_ms); //Block time.
 
-    if (rtn & EVENT_BITS_TASK_STOPPED != 0)
+    if ((rtn & EVENT_BITS_TASK_STOPPED) != 0)
     {
         return pdTRUE;
     }

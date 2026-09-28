@@ -1,6 +1,13 @@
 /**********     INCLUDES        **********/
 #include "runtime_stats.h"
-#include "cangauge.h"
+#include "drivers/drivers.h"
+
+#include "FreeRTOS.h"
+#include "task.h"
+
+#include <stdlib.h>
+#include <stdio.h>
+
 /**********     TYPEDEFS         **********/
 
 /**********		DEFINES		**********/

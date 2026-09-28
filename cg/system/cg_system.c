@@ -7,12 +7,18 @@
 
 
 /**********		INCLUDES		**********/
-#include <system/cg_system.h>
-#include "drivers/drivers.h"
-#include "lvgl_port/lvgl_port_def.h"
-#include "ui_helpers/ui_helpers.h"
-#include "error_handler.h"
+#include "cg_system.h"
 
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "semphr.h"
+#include "event_groups.h"
+#include "timers.h"
+
+#include "lvgl_port/lvgl_port_def.h"
+#include "lvgl.h"
+#include "drivers/drivers.h"
 
 /**********		DEFINES		**********/
 #define SCB_CPACR_CP10_FULL_ACCESS			0x3 << 20

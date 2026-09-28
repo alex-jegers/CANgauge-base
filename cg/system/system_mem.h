@@ -1,5 +1,9 @@
 /**
- * @file: basic control of the memory containers on CANgauge.
+ * @file system_mem.h
+ * @brief This header includes tools to configure memory including assigning variables
+ * explicitly to certain memory regions with section attributes defined as macros,
+ * file system sizes and sectors, creating and mounting file systems, and writing
+ * to flash sectors.
  */
 #ifndef _SYSTEM_MEM_H_
 #define _SYSTEM_MEM_H_
@@ -9,8 +13,8 @@ extern "C" {
 #endif
 
 /**********     INCLUDES        **********/
-#include "stm32h745xx.h"
-#include "stdbool.h"
+#include <stdint.h>
+#include <stdbool.h>
 #include "file_system/fatfs/ff.h"
 #include "file_system/fatfs/diskio.h"
 
@@ -28,8 +32,6 @@ extern "C" {
 #define SECTOR_SIZE_EEPROM		512
 #define BLOCK_SIZE_EEPROM		1
 #define NUM_SECTORS_EEPROM		0x1FFFF / SECTOR_SIZE_EEPROM
-
-#define FILE_MNGR_CONFIG_FILE_PATH		"0:/System Data.txt"        //TODO: move to application code.
 
 /**********     GLOBAL VARIABLE DECLRATIONS     **********/
 
