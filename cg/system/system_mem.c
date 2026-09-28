@@ -47,7 +47,7 @@ FRESULT sys_mem_create_eeprom_fs()
 	prv_fs_eeprom = (FATFS*)malloc(sizeof( FATFS ));
 	if (prv_fs_eeprom == NULL)
 	{
-		return -1;
+		return FR_DISK_ERR;
 	}
 	res = f_mount(prv_fs_eeprom, "0:", 1);
 	f_setlabel("CANgauge");
@@ -70,6 +70,11 @@ FRESULT sys_mem_create_ram_fs(uint32_t size_bytes)
 	SYS_MEM_REGION_EXTERN_RAM static uint8_t work_ram[4096];
 	memset(work_ram, 0, 4096);
 	res = f_mkfs("1:", &params, &work_ram, 4096);
+	prv_fs_ram = (FATFS*)malloc(sizeof( FATFS ));
+	if (prv_fs_ram == NULL)
+	{
+		return FR_DISK_ERR;
+	}
 	res = f_mount(prv_fs_ram, "1:", 1);
 	f_setlabel("1:CANgauge");
 	return res;
