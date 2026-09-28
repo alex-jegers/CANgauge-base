@@ -9,7 +9,7 @@ extern "C" {
 /**********     INCLUDES        **********/
 #include "lvgl.h"
 /**********     DEFINES      **********/
-#define UI_COLOR_LIGHT_MODE 1
+#define UI_COLOR_LIGHT_MODE 0
 
 #if UI_COLOR_LIGHT_MODE
 #define UI_COLOR_RED		lv_color_hex(0x000000)
