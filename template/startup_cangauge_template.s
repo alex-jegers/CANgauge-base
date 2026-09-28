@@ -1,7 +1,6 @@
 /**
  ******************************************************************************
  * @file      startup_stm32h745xihx_cm7.s
- * @author    Alex Jegers
  * @brief     STM32H745XIHx device vector table for GCC toolchain.
  *            This module performs:
  *                - Set the initial SP
@@ -16,6 +15,7 @@
 .cpu cortex-m7
 .fpu softvfp
 .thumb
+
 
 .global g_pfnVectors
 .global Default_Handler
@@ -772,4 +772,3 @@ g_pfnVectors:
 
 	.weak	SystemInit
 
-/************************ (C) COPYRIGHT STMicroelectonics *****END OF FILE****/
