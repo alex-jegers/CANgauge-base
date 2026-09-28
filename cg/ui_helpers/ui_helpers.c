@@ -71,7 +71,7 @@ lv_obj_t* ui_helpers_create_btn_with_text(lv_obj_t* parent, const char* text, co
 
 	return temp_btn;
 }
-
+#if LV_USE_CHECKBOX
 lv_obj_t* ui_helpers_create_checkbox_with_text(lv_obj_t* parent, const char* text, const lv_font_t* font)
 {
 	lv_obj_t* temp_checkbox;
@@ -88,7 +88,9 @@ lv_obj_t* ui_helpers_create_checkbox_with_text(lv_obj_t* parent, const char* tex
 
 	return temp_checkbox;
 }
+#endif //LV_USE_CHECKBOX
 
+#if LV_USE_SCALE
 lv_obj_t* ui_helpers_create_gauge(lv_obj_t* parent, int32_t min_val, int32_t max_val, uint32_t angle_range, uint32_t angle_rotation, lv_obj_t** needle)
 {
 	uint32_t total_tick_count = abs(max_val - min_val);
@@ -200,6 +202,7 @@ lv_obj_t* ui_helpers_create_gauge(lv_obj_t* parent, int32_t min_val, int32_t max
 	}
 	return temp_gauge;
 }
+#endif //LV_USE_SCALE
 
 void ui_helpers_create_gauge_animation(lv_anim_t* anim, lv_obj_t* obj, lv_anim_exec_xcb_t func, uint32_t duration, uint32_t min, uint32_t max)
 {
@@ -280,6 +283,7 @@ lv_obj_t* ui_helpers_show_loading_wheel(lv_obj_t* parent, const char* msg)
 	return container;
 }
 
+#if LV_USE_KEYBOARD
 lv_obj_t* ui_helpers_load_number_pad()
 {
 	if (prv_number_pad == NULL)
@@ -296,6 +300,7 @@ lv_obj_t* ui_helpers_load_number_pad()
 		return prv_number_pad;
 	}
 }
+#endif //LV_USE_KEYBOARD
 
 void ui_helpers_delete_number_pad()
 {
