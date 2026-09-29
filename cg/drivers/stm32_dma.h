@@ -8,6 +8,10 @@
 #ifndef INC_STM32_DMA_H_
 #define INC_STM32_DMA_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "stm32h745xx.h"
 
 #define MDMA_TEST_MODE 1
@@ -24,5 +28,8 @@ void mdma_nvic_enable_interrupt();											//Enables MDMA0 interrupt in the NV
 void mdma_test(uint32_t tlen, uint32_t cbndtr);
 #endif	//MDMA_TEST_MODE
 
+#ifdef __cplusplus
+} /*extern "C"*/
+#endif
 
 #endif /* INC_STM32_DMA_H_ */
